@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c4533c1ee0157d4199fb7bbccdb31cd, type: 3}
+  m_Name: PlayerSettings
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSettingsSO
+  damage: 10
+  force: 10
+  verticalForce: 8
+  maxHorizontalSpeed: 10
+  maxVerticalSpeed: 5
+  rotationSpeedX: 10
+  rotationSpeedY: 2
+  maxPitchAngle: 60
+  tiltSpeed: 8
+  tiltAngle: 20
+  layerCollision:
+    serializedVersion: 2
+    m_Bits: 0
+  multiplyDamageCollision: 2
+  cdAttack: 2
+  cdRope: 5
+  volumeMusic: 0
+  volumeSFX: 0
+  volumeUI: 0
