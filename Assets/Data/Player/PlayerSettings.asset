@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerSettings
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSettingsSO
   damage: 10
-  force: 10
+  force: 20
   verticalForce: 8
   maxHorizontalSpeed: 10
   maxVerticalSpeed: 5
