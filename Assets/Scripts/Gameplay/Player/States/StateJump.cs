@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 [RequireComponent(typeof(Rigidbody))]
 public class StateJump : StateBase
 {
+    private const float AerialMultiplier = 0.7f;
     public override void Initialize(FsmPlayerManager fsmManager, PlayerContext playerContext)
     {
         base.Initialize(fsmManager, playerContext);
@@ -45,20 +46,14 @@ public class StateJump : StateBase
 
     private void ApplyAerialMovement()
     {
-        const float aerialMultiplier = 0.7f;
-
         Vector3 localDirection = new(PlayerContext.MoveInput.x, 0f, PlayerContext.MoveInput.y);
-        Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(localDirection);
-        PlayerContext.Rb.AddForce(aerialMultiplier * PlayerContext.Data.Force * worldDirection);
+        Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(localDirection.normalized);
+        Vector3 targetVelocity = AerialMultiplier * PlayerContext.Data.MaxHorizontalSpeed * worldDirection;
 
-        ClampHorizontalVelocity();
-    }
+        Vector3 currentHorizontal = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
+        Vector3 newHorizontal = Vector3.MoveTowards(currentHorizontal, targetVelocity, PlayerContext.Data.Acceleration * AerialMultiplier * Time.fixedDeltaTime);
 
-    private void ClampHorizontalVelocity()
-    {
-        Vector3 horizontal = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
-        horizontal = Vector3.ClampMagnitude(horizontal, PlayerContext.Data.MaxHorizontalSpeed * 0.7f);
-        PlayerContext.Rb.linearVelocity = new Vector3(horizontal.x, PlayerContext.Rb.linearVelocity.y, horizontal.z);
+        PlayerContext.Rb.linearVelocity = new Vector3(newHorizontal.x, PlayerContext.Rb.linearVelocity.y, newHorizontal.z);
     }
 
     private bool IsGrounded()

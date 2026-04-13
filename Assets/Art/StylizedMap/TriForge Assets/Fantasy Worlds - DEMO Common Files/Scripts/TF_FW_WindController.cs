@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 namespace TriForge
 {
-    [ExecuteAlways]
+
     public class TF_FW_WindController : MonoBehaviour
     {
         [Range(0.0f, 2.0f)]
