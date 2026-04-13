@@ -16,7 +16,6 @@ public class FsmPlayerManager : MonoBehaviour
     private PlayerContext ctx;
     private readonly IList<StateBase> states = new List<StateBase>();
     private StateBase currentState;
-    private float nextDodgeTime;
 
     private void Awake()
     {
@@ -81,7 +80,7 @@ public class FsmPlayerManager : MonoBehaviour
     {
         bool isGrounded = currentState.StateType is StateType.Idle or StateType.Running;
 
-        if (ctx.DodgePressed && nextDodgeTime <= Time.time)
+        if (ctx.DodgePressed && ctx.NextDodgeTime <= Time.time)
         {
             SwitchState(StateType.Dodge);
             return;
@@ -99,6 +98,9 @@ public class FsmPlayerManager : MonoBehaviour
 
         if (isGrounded)
             SwitchState(ctx.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
+
+        Debug.Log(currentState.ToString());
+
     }
 
     private void OnSwitchCamera(InputValue value)

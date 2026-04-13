@@ -33,11 +33,12 @@ public class StateDodge : StateBase
 
     public override void OnFixedUpdate()
     {
-        ApplyRotation();
+        Manager.ApplyRotation();
     }
 
     public override void OnExit() { 
         PlayerContext.HealthSystem.SetInvulnerable(false);
+        PlayerContext.DodgePressed = false;
         PlayerContext.NextDodgeTime = Time.time + PlayerContext.Data.DodgeCooldown;
     }
     public override void OnAnimatorIK(int layerIndex) { }
@@ -53,11 +54,5 @@ public class StateDodge : StateBase
 
         PlayerContext.Rb.linearVelocity = new Vector3(0f, PlayerContext.Rb.linearVelocity.y, 0f);
         PlayerContext.Rb.AddForce(worldDirection * PlayerContext.Data.DodgeForce, ForceMode.Impulse);
-    }
-
-    private void ApplyRotation()
-    {
-        float angle = PlayerContext.LookInput.x * PlayerContext.Data.RotationSpeedX * Time.fixedDeltaTime;
-        PlayerContext.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
     }
 }
