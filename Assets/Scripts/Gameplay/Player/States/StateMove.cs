@@ -23,26 +23,19 @@ public class StateMove : StateBase
     {
         ApplyMovement();
         Manager.ApplyRotation();
-        ClampVelocity();
     }
     public override void OnExit() { }
     public override void OnAnimatorIK(int layerIndex) { }
 
     private void ApplyMovement()
     {
-        Vector3 localDirection = new(PlayerContext.MoveInput.x, PlayerContext.VerticalInput, PlayerContext.MoveInput.y);
-        Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(localDirection);
-        PlayerContext.Rb.AddForce(worldDirection * PlayerContext.Data.Force);
-        PlayerContext.Rb.AddForce(PlayerContext.Data.VerticalForce * PlayerContext.VerticalInput * Vector3.up);
-    }
-    private void ClampVelocity()
-    {
-        Vector3 horizontal = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
-        float vertical = PlayerContext.Rb.linearVelocity.y;
+        Vector3 localDirection = new(PlayerContext.MoveInput.x, 0f, PlayerContext.MoveInput.y);
+        Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(localDirection.normalized);
+        Vector3 targetVelocity = worldDirection * PlayerContext.Data.MaxHorizontalSpeed;
 
-        horizontal = Vector3.ClampMagnitude(horizontal, PlayerContext.Data.MaxHorizontalSpeed);
-        vertical = Mathf.Clamp(vertical, -PlayerContext.Data.MaxVerticalSpeed, PlayerContext.Data.MaxVerticalSpeed);
+        Vector3 currentHorizontal = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
+        Vector3 newHorizontal = Vector3.MoveTowards(currentHorizontal, targetVelocity, PlayerContext.Data.Acceleration * Time.fixedDeltaTime);
 
-        PlayerContext.Rb.linearVelocity = new Vector3(horizontal.x, vertical, horizontal.z);
+        PlayerContext.Rb.linearVelocity = new Vector3(newHorizontal.x, PlayerContext.Rb.linearVelocity.y, newHorizontal.z);
     }
 }

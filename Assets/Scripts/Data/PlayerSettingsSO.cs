@@ -5,10 +5,9 @@ public class PlayerSettingsSO : ScriptableObject
 {
     [SerializeField] private int damage = 10;
     [Header("Movement")]
-    [SerializeField] private float force = 10f;
-    [SerializeField] private float verticalForce = 8f;
     [SerializeField] private float maxHorizontalSpeed = 10f;
     [SerializeField] private float maxVerticalSpeed = 5f;
+    [SerializeField] private float acceleration = 20f;
     [Header("Dodge")]
     [SerializeField] private float dodgeForce = 8f;
     [SerializeField] private float dodgeDuration = 0.3f;
@@ -34,8 +33,6 @@ public class PlayerSettingsSO : ScriptableObject
     public float volumeUI;
 
     public int Damage { get { return damage; } }
-    public float Force { get { return force; } }
-    public float VerticalForce { get { return verticalForce; } }
     public float RotationSpeedX { get { return rotationSpeedX; } }
     public float RotationSpeedY { get { return rotationSpeedY; } }
     public float MaxPitchAngle { get { return maxPitchAngle; } }
@@ -52,4 +49,5 @@ public class PlayerSettingsSO : ScriptableObject
     public float DodgeForce => dodgeForce;
     public float DodgeDuration => dodgeDuration;
     public float DodgeCooldown => dodgeCooldown;
+    public float Acceleration => acceleration;
 }
