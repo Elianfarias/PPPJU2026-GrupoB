@@ -1,0 +1,6 @@
+using UnityEngine;
+
+public interface ISpell
+{
+    void Execute(Vector3 origin, Vector3 direction, float damage);
+}

@@ -64,7 +64,7 @@ public class HealthSystem : MonoBehaviour
     {
         life = 0;
         OnDie?.Invoke();
-
+        Destroy(gameObject);
         yield return new WaitForSeconds(0.5f);
     }
 
