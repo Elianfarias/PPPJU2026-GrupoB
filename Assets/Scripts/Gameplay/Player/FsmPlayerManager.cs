@@ -27,28 +27,28 @@ public class FsmPlayerManager : MonoBehaviour
             HealthSystem = healthSystem,
             CapsuleCollider = capsuleCollider,
             FirePoint = firePoint,
-            FsmPlayerManager = this
+            FsmPlayerManager = this,
+            OrbInventory = GetComponent<OrbInventory>()
         };
 
+        states.Add(new StateIdle());
         states.Add(new StateMove());
         states.Add(new StateAttack());
 
         foreach (var state in states)
             state.Initialize(this, ctx);
 
-        currentState = FindState(StateType.Running);
+        currentState = FindState(StateType.Idle);
         currentState.OnEnter();
     }
-
     private void Update()
     {
-        ctx.AttackPressed = false;
-        ctx.ThrowRopePressed = false;
         currentState.OnUpdate();
-    }
 
-    private void FixedUpdate() => currentState.OnFixedUpdate();
-    private void OnAnimatorIK(int layerIndex) => currentState.OnAnimatorIK(layerIndex);
+        HandleTransitions();
+    }
+    private void FixedUpdate() { currentState.OnFixedUpdate(); }
+    private void OnAnimatorIK(int layerIndex) { currentState.OnAnimatorIK(layerIndex); }
 
     private void OnMove(InputValue value)
     {
@@ -58,15 +58,24 @@ public class FsmPlayerManager : MonoBehaviour
     {
         ctx.LookInput = value.Get<Vector2>();
     }
-    private void OnUpDown(InputValue value)
+    private void OnAttack(InputValue value)
     {
-        ctx.VerticalInput = value.Get<float>();
+        if (value.isPressed)
+            ctx.AttackPressed = true;
     }
-    private void OnAttack(InputValue value) { 
-        if (value.isPressed) ctx.AttackPressed = true; 
-    }
-    private void OnThrowRope(InputValue value) { 
-        if (value.isPressed) ctx.ThrowRopePressed = true; 
+
+    private void HandleTransitions()
+    {
+        if (ctx.AttackPressed)
+        {
+            SwitchState(StateType.Attack);
+            return;
+        }
+
+        if (ctx.MoveInput != Vector2.zero || ctx.VerticalInput != 0f)
+            SwitchState(StateType.Running);
+        else
+            SwitchState(StateType.Idle);
     }
 
     private void OnSwitchCamera(InputValue value)
@@ -96,5 +105,11 @@ public class FsmPlayerManager : MonoBehaviour
     public Coroutine StartManagedCoroutine(IEnumerator routine)
     {
         return StartCoroutine(routine);
+    }
+
+    public void ApplyRotation()
+    {
+        float angle = ctx.LookInput.x * ctx.Data.RotationSpeedX * Time.fixedDeltaTime;
+        ctx.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 public class StateAttack : StateBase
 {
     private float nextTimeShoot;
-    private float nextTimeThrowRope;
 
     public StateAttack()
     {
@@ -15,22 +14,33 @@ public class StateAttack : StateBase
 
     public override void OnUpdate()
     {
-        if (PlayerContext.AttackPressed && nextTimeShoot < Time.time)
+        if (nextTimeShoot < Time.time)
         {
             nextTimeShoot = Time.time + PlayerContext.Data.CdAttack;
-            Shoot();
+            TryCast();
         }
+        
+        PlayerContext.AttackPressed = false;
     }
 
     public override void OnFixedUpdate() { }
     public override void OnExit() { }
     public override void OnAnimatorIK(int layerIndex) { }
 
-    private void Shoot()
+    private void TryCast()
     {
-        IPoolable poolable = PlayerBulletPool.Instance.Get();
-        MonoBehaviour mb = poolable as MonoBehaviour;
-        mb.transform.SetPositionAndRotation(PlayerContext.FirePoint.position, Manager.transform.rotation);
-        mb.GetComponent<ProjectileController>().Launch(PlayerContext.FirePoint.forward, PlayerContext.Data.Damage);
+        if (!PlayerContext.OrbInventory.TryConsumeOrbs(out OrbSettingsSO first, out OrbSettingsSO second))
+            return;
+
+        if (!PlayerContext.Data.SpellBook.TryGetSpell(first.Element, second.Element, out var spell))
+            return;
+
+        ExecuteSpell(spell);
+    }
+
+    private void ExecuteSpell(SpellSettingsSO spell)
+    {
+        var instance = spell.GetPool().GetSpell();
+        instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward, spell.Damage);
     }
 }

@@ -12,7 +12,7 @@ namespace Assets.Scripts.Gameplay.GameSystem.Object_Pool
         [SerializeField] private int maxSize = 30;
         protected Queue<IPoolable> available = new();
 
-        protected void Initialize()
+        public virtual void Initialize()
         {
             for (int i = 0; i < defaultCapacity; i++)
                 available.Enqueue(CreateNew());

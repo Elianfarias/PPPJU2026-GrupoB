@@ -16,28 +16,17 @@ public class StateMove : StateBase
     {
         base.OnEnter();
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
-    public override void OnUpdate()
-    {
-    }
-
+    public override void OnUpdate() { }
     public override void OnFixedUpdate()
     {
         ApplyMovement();
-        ApplyRotation();
+        Manager.ApplyRotation();
         ClampVelocity();
-        ApplyVisualTilt();
     }
-
-    public override void OnExit()
-    {
-    }
-
-    public override void OnAnimatorIK(int layerIndex)
-    {
-    }
+    public override void OnExit() { }
+    public override void OnAnimatorIK(int layerIndex) { }
 
     private void ApplyMovement()
     {
@@ -46,13 +35,6 @@ public class StateMove : StateBase
         PlayerContext.Rb.AddForce(worldDirection * PlayerContext.Data.Force);
         PlayerContext.Rb.AddForce(PlayerContext.Data.VerticalForce * PlayerContext.VerticalInput * Vector3.up);
     }
-
-    private void ApplyRotation()
-    {
-        float angle = PlayerContext.LookInput.x * PlayerContext.Data.RotationSpeedX * Time.fixedDeltaTime;
-        PlayerContext.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
-    }
-
     private void ClampVelocity()
     {
         Vector3 horizontal = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
@@ -62,19 +44,5 @@ public class StateMove : StateBase
         vertical = Mathf.Clamp(vertical, -PlayerContext.Data.MaxVerticalSpeed, PlayerContext.Data.MaxVerticalSpeed);
 
         PlayerContext.Rb.linearVelocity = new Vector3(horizontal.x, vertical, horizontal.z);
-    }
-
-    private void ApplyVisualTilt()
-    {
-        float targetPitch = PlayerContext.MoveInput.y <= 0 ? (PlayerContext.MoveInput.y * PlayerContext.Data.TiltAngle * 0.1f) : (PlayerContext.MoveInput.y * PlayerContext.Data.TiltAngle);
-        float targetRoll = -PlayerContext.MoveInput.x * PlayerContext.Data.TiltAngle;
-
-        Quaternion playerRotation = Quaternion.Euler(targetPitch, 0f, targetRoll);
-
-        PlayerContext.FirePoint.localRotation = Quaternion.Lerp(
-            PlayerContext.FirePoint.localRotation,
-            playerRotation,
-            Time.fixedDeltaTime * PlayerContext.Data.TiltSpeed
-            );
     }
 }
