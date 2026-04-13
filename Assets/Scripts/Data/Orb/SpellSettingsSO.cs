@@ -7,5 +7,8 @@ public class SpellSettingsSO : ScriptableObject
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] public string SpellId { get; private set; }
     [field: SerializeField] public float Damage { get; private set; }
+    [field: SerializeField] public AudioClip CastSpellSound { get; private set; }
+    [field: SerializeField] public AudioClip SpellSound { get; private set; }
+    [field: SerializeField] public AudioClip ImpactSpellSound { get; private set; }
     public PlayerSpellPool GetPool() => PlayerSpellPool.Get(SpellId);
 }
