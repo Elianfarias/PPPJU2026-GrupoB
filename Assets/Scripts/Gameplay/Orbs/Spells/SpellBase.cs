@@ -14,7 +14,7 @@ namespace Assets.Scripts.Gameplay.Orbs.Spells
 
         public virtual void OnGetFromPool() { }
 
-        public abstract void Execute(Vector3 origin, Vector3 direction);
+        public abstract void Execute(Vector3 origin, Vector3 direction, float damage);
 
         protected void ReturnToPool()
         {

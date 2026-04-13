@@ -38,7 +38,7 @@ public class FsmPlayerManager : MonoBehaviour
         foreach (var state in states)
             state.Initialize(this, ctx);
 
-        currentState = FindState(StateType.Running);
+        currentState = FindState(StateType.Idle);
         currentState.OnEnter();
     }
     private void Update()
@@ -58,10 +58,6 @@ public class FsmPlayerManager : MonoBehaviour
     {
         ctx.LookInput = value.Get<Vector2>();
     }
-    private void OnUpDown(InputValue value)
-    {
-        ctx.VerticalInput = value.Get<float>();
-    }
     private void OnAttack(InputValue value)
     {
         if (value.isPressed)
@@ -72,22 +68,14 @@ public class FsmPlayerManager : MonoBehaviour
     {
         if (ctx.AttackPressed)
         {
-            Debug.Log("IsAttacking");
             SwitchState(StateType.Attack);
             return;
         }
 
         if (ctx.MoveInput != Vector2.zero || ctx.VerticalInput != 0f)
-        {
-            Debug.Log("IsRunning");
             SwitchState(StateType.Running);
-        }
         else
-        {
-            Debug.Log("IsIDle");
-
             SwitchState(StateType.Idle);
-        }
     }
 
     private void OnSwitchCamera(InputValue value)

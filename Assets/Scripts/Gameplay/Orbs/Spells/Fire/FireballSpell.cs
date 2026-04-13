@@ -23,25 +23,6 @@ public class FireballSpell : SpellBase
     private float elapsedTime;
     private bool hasHit;
 
-    public override void OnGetFromPool()
-    {
-        hasHit = false;
-        elapsedTime = 0f;
-
-        if (projectileMesh != null) projectileMesh.enabled = true;
-        if (flightParticles != null) flightParticles.Play();
-
-        foreach (var col in GetComponents<Collider>())
-            col.enabled = true;
-    }
-
-    public override void Execute(Vector3 origin, Vector3 direction)
-    {
-        this.origin = origin;
-        initialVelocity = direction * speed;
-        transform.position = origin;
-    }
-
     private void Update()
     {
         if (hasHit) return;
@@ -61,6 +42,26 @@ public class FireballSpell : SpellBase
             healthSystem.DoDamage(damage);
 
         Explode();
+    }
+
+    public override void OnGetFromPool()
+    {
+        hasHit = false;
+        elapsedTime = 0f;
+
+        if (projectileMesh != null) projectileMesh.enabled = true;
+        if (flightParticles != null) flightParticles.Play();
+
+        foreach (var col in GetComponents<Collider>())
+            col.enabled = true;
+    }
+
+    public override void Execute(Vector3 origin, Vector3 direction, float damage)
+    {
+        this.damage = damage;
+        this.origin = origin;
+        initialVelocity = direction * speed;
+        transform.position = origin;
     }
 
     private void Explode()

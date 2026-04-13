@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c4533c1ee0157d4199fb7bbccdb31cd, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSettingsSO
-  damage: 10
+  damage: 100
   force: 20
   verticalForce: 8
   maxHorizontalSpeed: 10

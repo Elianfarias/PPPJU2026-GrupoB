@@ -18,4 +18,9 @@ public class SpellBookSO : ScriptableObject
         result = null;
         return false;
     }
+
+    public void getElements(out int a)
+    {
+        a = 1;
+    }
 }

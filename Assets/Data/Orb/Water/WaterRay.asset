@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: WaterRay
   m_EditorClassIdentifier: Assembly-CSharp::SpellSettingsSO
   <SpellName>k__BackingField: WaterRay
-  <Description>k__BackingField: WaterRay
+  <Description>k__BackingField: rayo de agua
   <SpellId>k__BackingField: WaterRay
+  <Damage>k__BackingField: 100

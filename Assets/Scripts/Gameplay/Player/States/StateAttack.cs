@@ -29,7 +29,7 @@ public class StateAttack : StateBase
 
     private void TryCast()
     {
-        if (!PlayerContext.OrbInventory.TryConsumeOrbs(out var first, out var second))
+        if (!PlayerContext.OrbInventory.TryConsumeOrbs(out OrbSettingsSO first, out OrbSettingsSO second))
             return;
 
         if (!PlayerContext.Data.SpellBook.TryGetSpell(first.Element, second.Element, out var spell))
@@ -41,6 +41,6 @@ public class StateAttack : StateBase
     private void ExecuteSpell(SpellSettingsSO spell)
     {
         var instance = spell.GetPool().GetSpell();
-        instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward);
+        instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward, spell.Damage);
     }
 }
