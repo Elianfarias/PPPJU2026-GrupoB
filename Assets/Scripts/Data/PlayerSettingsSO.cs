@@ -19,6 +19,7 @@ public class PlayerSettingsSO : ScriptableObject
     [SerializeField] private LayerMask layerCollision;
     [SerializeField] private float multiplyDamageCollision = 2f;
     [Header("Attack")]
+    [SerializeField] private SpellBookSO spellBook;
     [SerializeField] private float cdAttack = 2f;
     [SerializeField] private float cdRope = 5f;
     [Header("Audio")]
@@ -40,4 +41,6 @@ public class PlayerSettingsSO : ScriptableObject
     public float CdAttack { get { return cdAttack; } }
     public float CdRope { get { return cdRope; } }
     public float MultiplyDamageCollision { get { return multiplyDamageCollision; } }
+    public SpellBookSO SpellBook { get  { return spellBook; } }
+
 }

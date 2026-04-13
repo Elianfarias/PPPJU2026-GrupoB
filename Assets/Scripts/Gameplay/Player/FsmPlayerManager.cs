@@ -27,9 +27,11 @@ public class FsmPlayerManager : MonoBehaviour
             HealthSystem = healthSystem,
             CapsuleCollider = capsuleCollider,
             FirePoint = firePoint,
-            FsmPlayerManager = this
+            FsmPlayerManager = this,
+            OrbInventory = GetComponent<OrbInventory>()
         };
 
+        states.Add(new StateIdle());
         states.Add(new StateMove());
         states.Add(new StateAttack());
 
@@ -39,16 +41,14 @@ public class FsmPlayerManager : MonoBehaviour
         currentState = FindState(StateType.Running);
         currentState.OnEnter();
     }
-
     private void Update()
     {
-        ctx.AttackPressed = false;
-        ctx.ThrowRopePressed = false;
         currentState.OnUpdate();
-    }
 
-    private void FixedUpdate() => currentState.OnFixedUpdate();
-    private void OnAnimatorIK(int layerIndex) => currentState.OnAnimatorIK(layerIndex);
+        HandleTransitions();
+    }
+    private void FixedUpdate() { currentState.OnFixedUpdate(); }
+    private void OnAnimatorIK(int layerIndex) { currentState.OnAnimatorIK(layerIndex); }
 
     private void OnMove(InputValue value)
     {
@@ -62,11 +62,32 @@ public class FsmPlayerManager : MonoBehaviour
     {
         ctx.VerticalInput = value.Get<float>();
     }
-    private void OnAttack(InputValue value) { 
-        if (value.isPressed) ctx.AttackPressed = true; 
+    private void OnAttack(InputValue value)
+    {
+        if (value.isPressed)
+            ctx.AttackPressed = true;
     }
-    private void OnThrowRope(InputValue value) { 
-        if (value.isPressed) ctx.ThrowRopePressed = true; 
+
+    private void HandleTransitions()
+    {
+        if (ctx.AttackPressed)
+        {
+            Debug.Log("IsAttacking");
+            SwitchState(StateType.Attack);
+            return;
+        }
+
+        if (ctx.MoveInput != Vector2.zero || ctx.VerticalInput != 0f)
+        {
+            Debug.Log("IsRunning");
+            SwitchState(StateType.Running);
+        }
+        else
+        {
+            Debug.Log("IsIDle");
+
+            SwitchState(StateType.Idle);
+        }
     }
 
     private void OnSwitchCamera(InputValue value)

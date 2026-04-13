@@ -16,28 +16,17 @@ public class StateMove : StateBase
     {
         base.OnEnter();
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
-    public override void OnUpdate()
-    {
-    }
-
+    public override void OnUpdate() { }
     public override void OnFixedUpdate()
     {
         ApplyMovement();
         ApplyRotation();
         ClampVelocity();
-        ApplyVisualTilt();
     }
-
-    public override void OnExit()
-    {
-    }
-
-    public override void OnAnimatorIK(int layerIndex)
-    {
-    }
+    public override void OnExit() { }
+    public override void OnAnimatorIK(int layerIndex) { }
 
     private void ApplyMovement()
     {
@@ -62,19 +51,5 @@ public class StateMove : StateBase
         vertical = Mathf.Clamp(vertical, -PlayerContext.Data.MaxVerticalSpeed, PlayerContext.Data.MaxVerticalSpeed);
 
         PlayerContext.Rb.linearVelocity = new Vector3(horizontal.x, vertical, horizontal.z);
-    }
-
-    private void ApplyVisualTilt()
-    {
-        float targetPitch = PlayerContext.MoveInput.y <= 0 ? (PlayerContext.MoveInput.y * PlayerContext.Data.TiltAngle * 0.1f) : (PlayerContext.MoveInput.y * PlayerContext.Data.TiltAngle);
-        float targetRoll = -PlayerContext.MoveInput.x * PlayerContext.Data.TiltAngle;
-
-        Quaternion playerRotation = Quaternion.Euler(targetPitch, 0f, targetRoll);
-
-        PlayerContext.FirePoint.localRotation = Quaternion.Lerp(
-            PlayerContext.FirePoint.localRotation,
-            playerRotation,
-            Time.fixedDeltaTime * PlayerContext.Data.TiltSpeed
-            );
     }
 }
