@@ -22,7 +22,7 @@ public class StateMove : StateBase
     public override void OnFixedUpdate()
     {
         ApplyMovement();
-        ApplyRotation();
+        Manager.ApplyRotation();
         ClampVelocity();
     }
     public override void OnExit() { }
@@ -35,13 +35,6 @@ public class StateMove : StateBase
         PlayerContext.Rb.AddForce(worldDirection * PlayerContext.Data.Force);
         PlayerContext.Rb.AddForce(PlayerContext.Data.VerticalForce * PlayerContext.VerticalInput * Vector3.up);
     }
-
-    private void ApplyRotation()
-    {
-        float angle = PlayerContext.LookInput.x * PlayerContext.Data.RotationSpeedX * Time.fixedDeltaTime;
-        PlayerContext.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
-    }
-
     private void ClampVelocity()
     {
         Vector3 horizontal = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);

@@ -118,4 +118,10 @@ public class FsmPlayerManager : MonoBehaviour
     {
         return StartCoroutine(routine);
     }
+
+    public void ApplyRotation()
+    {
+        float angle = ctx.LookInput.x * ctx.Data.RotationSpeedX * Time.fixedDeltaTime;
+        ctx.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
+    }
 }

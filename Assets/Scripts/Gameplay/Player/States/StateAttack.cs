@@ -40,7 +40,7 @@ public class StateAttack : StateBase
 
     private void ExecuteSpell(SpellSettingsSO spell)
     {
-        if (spell.VFXPrefab != null)
-            Object.Instantiate(spell.VFXPrefab, PlayerContext.FirePoint.position, PlayerContext.FirePoint.rotation);
+        var instance = spell.GetPool().GetSpell();
+        instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward);
     }
 }

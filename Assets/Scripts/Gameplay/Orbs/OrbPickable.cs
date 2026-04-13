@@ -1,5 +1,6 @@
 
 using Assets.Scripts.Gameplay.Orbs;
+using Assets.Scripts.Gameplay.Player;
 using Assets.Scripts.Gameplay.Systems;
 using System;
 using UnityEngine;
@@ -15,22 +16,10 @@ public class OrbPickable : MonoBehaviour, IPickable, IPoolable
     private OrbSettingsSO orbSettings;
     private OrbPool ownerPool;
     private Vector3 startPosition;
+    private bool isOrbiting;
 
     public event Action OnReturned;
     public OrbSettingsSO OrbSettings => orbSettings;
-
-    private void Update()
-    {
-        float yOffset = Mathf.Sin(Time.time * floatSpeed) * floatAmplitude;
-        transform.position = startPosition + Vector3.up * yOffset;
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!other.CompareTag("Player")) return;
-        OnPickup(other.gameObject);
-    }
 
     public void Setup(OrbSettingsSO settings)
     {
@@ -44,7 +33,18 @@ public class OrbPickable : MonoBehaviour, IPickable, IPoolable
 
     public void OnGetFromPool()
     {
+        isOrbiting = false;
         startPosition = transform.position;
+        GetComponent<Collider>().enabled = true;
+    }
+
+    private void Update()
+    {
+        if (isOrbiting) return;
+
+        float yOffset = Mathf.Sin(Time.time * floatSpeed) * floatAmplitude;
+        transform.position = startPosition + Vector3.up * yOffset;
+        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
     }
 
     public void OnPickup(GameObject picker)
@@ -52,11 +52,27 @@ public class OrbPickable : MonoBehaviour, IPickable, IPoolable
         if (!picker.TryGetComponent<OrbInventory>(out var inventory)) return;
         if (!inventory.TryAddOrb(orbSettings)) return;
 
-        ReturnToPool();
+        if (!picker.TryGetComponent<OrbOrbitable>(out var orbitController)) return;
+
+        EnterOrbitMode(orbitController);
     }
 
-    private void ReturnToPool()
+    private void OnTriggerEnter(Collider other)
     {
+        if (!other.CompareTag("Player")) return;
+        OnPickup(other.gameObject);
+    }
+
+    private void EnterOrbitMode(OrbOrbitable orbitController)
+    {
+        isOrbiting = true;
+        GetComponent<Collider>().enabled = false;
+        orbitController.RegisterOrb(this);
+    }
+
+    public void ReturnToPool()
+    {
+        isOrbiting = false;
         OnReturned?.Invoke();
         OnReturned = null;
         ownerPool.ReturnOrb(this);

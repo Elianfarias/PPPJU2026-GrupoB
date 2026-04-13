@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 69cce9db8ce00784d9d5fef139b089fd, type: 3}
-  m_Name: Fireball
+  m_Name: WaterRay
   m_EditorClassIdentifier: Assembly-CSharp::SpellSettingsSO
-  <SpellName>k__BackingField: Fireball
-  <Description>k__BackingField: fireball
-  <Icon>k__BackingField: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  <SpellId>k__BackingField: Fireball
+  <SpellName>k__BackingField: WaterRay
+  <Description>k__BackingField: WaterRay
+  <SpellId>k__BackingField: WaterRay

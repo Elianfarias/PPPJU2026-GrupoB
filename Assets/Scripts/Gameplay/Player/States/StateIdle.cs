@@ -24,6 +24,7 @@ public class StateIdle : StateBase
 
     public override void OnFixedUpdate()
     {
+        Manager.ApplyRotation();
     }
 
     public override void OnExit()
