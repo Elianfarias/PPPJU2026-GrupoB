@@ -5,5 +5,6 @@ public enum StateType
     Running,
     Attack,
     Dodge,
+    Jump,
     Dying
 }

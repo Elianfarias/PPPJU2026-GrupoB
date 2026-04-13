@@ -9,6 +9,12 @@ public class PlayerSettingsSO : ScriptableObject
     [SerializeField] private float verticalForce = 8f;
     [SerializeField] private float maxHorizontalSpeed = 10f;
     [SerializeField] private float maxVerticalSpeed = 5f;
+    [Header("Dodge")]
+    [SerializeField] private float dodgeForce = 8f;
+    [SerializeField] private float dodgeDuration = 0.3f;
+    [SerializeField] private float dodgeCooldown = 1.5f;
+    [Header("Jump")]
+    [SerializeField] private float jumpForce = 6f;
     [Header("Rotation")]
     [SerializeField] private float rotationSpeedX = 10f;
     [SerializeField] private float rotationSpeedY = 2f;
@@ -42,5 +48,8 @@ public class PlayerSettingsSO : ScriptableObject
     public float CdRope { get { return cdRope; } }
     public float MultiplyDamageCollision { get { return multiplyDamageCollision; } }
     public SpellBookSO SpellBook { get  { return spellBook; } }
-
+    public float JumpForce => jumpForce;
+    public float DodgeForce => dodgeForce;
+    public float DodgeDuration => dodgeDuration;
+    public float DodgeCooldown => dodgeCooldown;
 }
