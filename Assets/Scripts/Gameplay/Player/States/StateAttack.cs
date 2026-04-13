@@ -21,9 +21,12 @@ public class StateAttack : StateBase
         }
         
         PlayerContext.AttackPressed = false;
+        Manager.SwitchState(PlayerContext.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
     }
 
-    public override void OnFixedUpdate() { }
+    public override void OnFixedUpdate() {
+        Manager.ApplyRotation();
+    }
     public override void OnExit() { }
     public override void OnAnimatorIK(int layerIndex) { }
 

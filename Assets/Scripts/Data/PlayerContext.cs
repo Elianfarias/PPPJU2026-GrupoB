@@ -14,4 +14,7 @@ public class PlayerContext
     public CapsuleCollider CapsuleCollider;
     public Transform FirePoint;
     public OrbInventory OrbInventory;
+    public bool JumpPressed;
+    public bool DodgePressed;
+    public float NextDodgeTime;
 }

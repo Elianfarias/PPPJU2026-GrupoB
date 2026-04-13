@@ -72,4 +72,9 @@ public class HealthSystem : MonoBehaviour
     {
         return life;
     }
+
+    public void SetInvulnerable(bool invulnerable)
+    {
+        isTakingDamage = invulnerable;
+    }
 }

@@ -34,6 +34,8 @@ public class FsmPlayerManager : MonoBehaviour
         states.Add(new StateIdle());
         states.Add(new StateMove());
         states.Add(new StateAttack());
+        states.Add(new StateJump());
+        states.Add(new StateDodge());
 
         foreach (var state in states)
             state.Initialize(this, ctx);
@@ -63,19 +65,42 @@ public class FsmPlayerManager : MonoBehaviour
         if (value.isPressed)
             ctx.AttackPressed = true;
     }
+    private void OnJump(InputValue value)
+    {
+        if (value.isPressed)
+            ctx.JumpPressed = true;
+    }
+    private void OnDodge(InputValue value)
+    {
+        if (value.isPressed)
+            ctx.DodgePressed = true;
+    }
 
     private void HandleTransitions()
     {
+        bool isGrounded = currentState.StateType is StateType.Idle or StateType.Running;
+
+        if (ctx.DodgePressed && ctx.NextDodgeTime <= Time.time)
+        {
+            SwitchState(StateType.Dodge);
+            return;
+        }
+        if (ctx.JumpPressed && isGrounded)
+        {
+            SwitchState(StateType.Jump);
+            return;
+        }
         if (ctx.AttackPressed)
         {
             SwitchState(StateType.Attack);
             return;
         }
 
-        if (ctx.MoveInput != Vector2.zero || ctx.VerticalInput != 0f)
-            SwitchState(StateType.Running);
-        else
-            SwitchState(StateType.Idle);
+        if (isGrounded)
+            SwitchState(ctx.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
+
+        Debug.Log(currentState.ToString());
+
     }
 
     private void OnSwitchCamera(InputValue value)
