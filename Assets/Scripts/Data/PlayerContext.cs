@@ -17,4 +17,5 @@ public class PlayerContext
     public bool JumpPressed;
     public bool DodgePressed;
     public float NextDodgeTime;
+    public bool IsGrounded;
 }

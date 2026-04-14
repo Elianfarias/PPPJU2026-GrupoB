@@ -16,14 +16,13 @@ public class StateJump : StateBase
     public override void OnEnter()
     {
         base.OnEnter();
+        PlayerContext.IsGrounded = false;
         Cursor.lockState = CursorLockMode.Locked;
         ApplyJumpImpulse();
     }
 
     public override void OnUpdate()
     {
-        if (!IsGrounded()) return;
-
         Manager.SwitchState(PlayerContext.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
     }
 
@@ -54,12 +53,5 @@ public class StateJump : StateBase
         Vector3 newHorizontal = Vector3.MoveTowards(currentHorizontal, targetVelocity, PlayerContext.Data.Acceleration * AerialMultiplier * Time.fixedDeltaTime);
 
         PlayerContext.Rb.linearVelocity = new Vector3(newHorizontal.x, PlayerContext.Rb.linearVelocity.y, newHorizontal.z);
-    }
-
-    private bool IsGrounded()
-    {
-        var origin = PlayerContext.CapsuleCollider.bounds.center;
-        float rayLength = PlayerContext.CapsuleCollider.bounds.extents.y + 0.15f;
-        return Physics.Raycast(origin, Vector3.down, rayLength, PlayerContext.Data.LayerCollision);
     }
 }

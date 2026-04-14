@@ -28,6 +28,7 @@ public class FsmPlayerManager : MonoBehaviour
             CapsuleCollider = capsuleCollider,
             FirePoint = firePoint,
             FsmPlayerManager = this,
+            IsGrounded = true,
             OrbInventory = GetComponent<OrbInventory>()
         };
 
@@ -51,7 +52,11 @@ public class FsmPlayerManager : MonoBehaviour
     }
     private void FixedUpdate() { currentState.OnFixedUpdate(); }
     private void OnAnimatorIK(int layerIndex) { currentState.OnAnimatorIK(layerIndex); }
-
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, Vector3.down * data.RaycastDistance);
+    }
     private void OnMove(InputValue value)
     {
         ctx.MoveInput = value.Get<Vector2>();
@@ -78,14 +83,14 @@ public class FsmPlayerManager : MonoBehaviour
 
     private void HandleTransitions()
     {
-        bool isGrounded = currentState.StateType is StateType.Idle or StateType.Running;
+        ctx.IsGrounded = IsGrounded();
 
         if (ctx.DodgePressed && ctx.NextDodgeTime <= Time.time)
         {
             SwitchState(StateType.Dodge);
             return;
         }
-        if (ctx.JumpPressed && isGrounded)
+        if (ctx.JumpPressed && ctx.IsGrounded)
         {
             SwitchState(StateType.Jump);
             return;
@@ -96,11 +101,8 @@ public class FsmPlayerManager : MonoBehaviour
             return;
         }
 
-        if (isGrounded)
+        if (ctx.IsGrounded)
             SwitchState(ctx.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
-
-        Debug.Log(currentState.ToString());
-
     }
 
     private void OnSwitchCamera(InputValue value)
@@ -136,5 +138,11 @@ public class FsmPlayerManager : MonoBehaviour
     {
         float angle = ctx.LookInput.x * ctx.Data.RotationSpeedX * Time.fixedDeltaTime;
         ctx.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
+    }
+
+    private bool IsGrounded()
+    {
+        var origin = capsuleCollider.bounds.center;
+        return Physics.Raycast(origin, Vector3.down, data.RaycastDistance, data.LayerCollision);
     }
 }

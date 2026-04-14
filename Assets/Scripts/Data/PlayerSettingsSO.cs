@@ -14,6 +14,7 @@ public class PlayerSettingsSO : ScriptableObject
     [SerializeField] private float dodgeCooldown = 1.5f;
     [Header("Jump")]
     [SerializeField] private float jumpForce = 6f;
+    [SerializeField] private float raycastDistance = 1f;
     [Header("Rotation")]
     [SerializeField] private float rotationSpeedX = 10f;
     [SerializeField] private float rotationSpeedY = 2f;
@@ -50,4 +51,6 @@ public class PlayerSettingsSO : ScriptableObject
     public float DodgeDuration => dodgeDuration;
     public float DodgeCooldown => dodgeCooldown;
     public float Acceleration => acceleration;
+    public float RaycastDistance => raycastDistance;
+
 }
