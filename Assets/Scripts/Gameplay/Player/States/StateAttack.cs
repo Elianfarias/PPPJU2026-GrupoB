@@ -1,56 +1,53 @@
-using Assets.Scripts.Gameplay.Systems;
 using UnityEngine;
 
-public class StateAttack : StateBase
+namespace Assets.Scripts.Gameplay.Player.States
 {
-    private float nextTimeShoot;
-
-    public StateAttack()
+    public class StateAttack : StateBase
     {
-        StateType = StateType.Attack;
-    }
+        private float nextTimeCast;
 
-    public override void OnEnter() => base.OnEnter();
-
-    public override void OnUpdate()
-    {
-        if (nextTimeShoot < Time.time)
+        public override void Initialize(FsmPlayerManager manager, PlayerContext playerContext)
         {
-            nextTimeShoot = Time.time + PlayerContext.Data.CdAttack;
+            base.Initialize(manager, playerContext);
+            StateType = StateType.Attack;
+        }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            PlayerContext.JumpPressed = false;
+            PlayerContext.AttackPressed = false;
             TryCast();
         }
 
-        PlayerContext.AttackPressed = false;
+        public override void OnUpdate()
+        {
+            PlayerContext.AttackPressed = false;
+            Manager.ReturnFromAttack();
+        }
 
-        if (PlayerContext.MoveInput == Vector2.zero)
-            Manager.SwitchState(StateType.Idle);
-        else if (PlayerContext.SprintPressed)
-            Manager.SwitchState(StateType.Running);
-        else
-            Manager.SwitchState(StateType.Walking);
-    }
+        public override void OnFixedUpdate() { }
 
-    public override void OnFixedUpdate()
-    {
-        Manager.ApplyRotation();
-    }
-    public override void OnExit() { }
-    public override void OnAnimatorIK(int layerIndex) { }
+        public override void OnExit() { }
 
-    private void TryCast()
-    {
-        if (!PlayerContext.OrbInventory.TryConsumeOrbs(out OrbSettingsSO first, out OrbSettingsSO second))
-            return;
+        public override void OnAnimatorIK(int layerIndex) { }
 
-        if (!PlayerContext.Data.SpellBook.TryGetSpell(first.Element, second.Element, out var spell))
-            return;
+        private void TryCast()
+        {
+            if (nextTimeCast > Time.time) return;
 
-        ExecuteSpell(spell);
-    }
+            nextTimeCast = Time.time + PlayerContext.Data.CdAttack;
 
-    private void ExecuteSpell(SpellSettingsSO spell)
-    {
-        var instance = spell.GetPool().GetSpell();
-        instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward, spell.Damage);
+            if (!PlayerContext.OrbInventory.TryConsumeOrbs(out var first, out var second)) return;
+            if (!PlayerContext.Data.SpellBook.TryGetSpell(first.Element, second.Element, out var spell)) return;
+
+            ExecuteSpell(spell);
+        }
+
+        private void ExecuteSpell(SpellSettingsSO spell)
+        {
+            var instance = spell.GetPool().GetSpell();
+            instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward, spell.Damage);
+        }
     }
 }

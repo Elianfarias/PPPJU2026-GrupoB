@@ -18,4 +18,5 @@ public class PlayerContext
     public bool DodgePressed;
     public bool SprintPressed;
     public float NextDodgeTime;
+    public StateType PreviousRootState;
 }

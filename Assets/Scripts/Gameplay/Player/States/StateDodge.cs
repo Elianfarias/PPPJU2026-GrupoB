@@ -1,49 +1,57 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class StateDodge : StateBase
+namespace Assets.Scripts.Gameplay.Player.States
 {
-
-    public override void Initialize(FsmPlayerManager fsmManager, PlayerContext playerContext)
+    public class StateDodge : StateBase
     {
-        base.Initialize(fsmManager, playerContext);
-        StateType = StateType.Dodge;
-    }
 
-    public override void OnEnter()
-    {
-        base.OnEnter();
-        Cursor.lockState = CursorLockMode.Locked;
+        public override void Initialize(FsmPlayerManager fsmManager, PlayerContext playerContext)
+        {
+            base.Initialize(fsmManager, playerContext);
+            StateType = StateType.Dodge;
+        }
 
-        ApplyDodgeImpulse();
-        PlayerContext.HealthSystem.SetInvulnerable(true);
-    }
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            Cursor.lockState = CursorLockMode.Locked;
 
-    public override void OnUpdate() { }
+            ApplyDodgeImpulse();
+            PlayerContext.HealthSystem.SetInvulnerable(true);
+        }
 
-    public override void OnFixedUpdate()
-    {
-        Manager.ApplyRotation();
-    }
+        public override void OnUpdate() { }
 
-    public override void OnExit()
-    {
-        PlayerContext.HealthSystem.SetInvulnerable(false);
-        PlayerContext.DodgePressed = false;
-        PlayerContext.NextDodgeTime = Time.time + PlayerContext.Data.DodgeCooldown;
-    }
-    public override void OnAnimatorIK(int layerIndex) { }
+        public override void OnFixedUpdate()
+        {
+            ApplyRotation();
+        }
 
-    private void ApplyDodgeImpulse()
-    {
-        Vector3 localDirection = new(PlayerContext.MoveInput.x, 0f, PlayerContext.MoveInput.y);
+        public override void OnExit()
+        {
+            PlayerContext.HealthSystem.SetInvulnerable(false);
+            PlayerContext.DodgePressed = false;
+            PlayerContext.NextDodgeTime = Time.time + PlayerContext.Data.DodgeCooldown;
+        }
+        public override void OnAnimatorIK(int layerIndex) { }
 
-        if (localDirection == Vector3.zero)
-            localDirection = Vector3.back;
+        private void ApplyDodgeImpulse()
+        {
+            Vector3 localDirection = new(PlayerContext.MoveInput.x, 0f, PlayerContext.MoveInput.y);
 
-        Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(localDirection.normalized);
+            if (localDirection == Vector3.zero)
+                localDirection = Vector3.back;
 
-        PlayerContext.Rb.linearVelocity = new Vector3(0f, PlayerContext.Rb.linearVelocity.y, 0f);
-        PlayerContext.Rb.AddForce(worldDirection * PlayerContext.Data.DodgeForce, ForceMode.Impulse);
+            Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(localDirection.normalized);
+
+            PlayerContext.Rb.linearVelocity = new Vector3(0f, PlayerContext.Rb.linearVelocity.y, 0f);
+            PlayerContext.Rb.AddForce(worldDirection * PlayerContext.Data.DodgeForce, ForceMode.Impulse);
+        }
+
+        private void ApplyRotation()
+        {
+            float angle = PlayerContext.LookInput.x * PlayerContext.Data.RotationSpeedX * Time.fixedDeltaTime;
+            PlayerContext.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
+        }
     }
 }

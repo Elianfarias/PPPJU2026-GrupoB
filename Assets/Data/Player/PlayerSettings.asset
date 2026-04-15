@@ -15,12 +15,12 @@ MonoBehaviour:
   damage: 100
   maxHorizontalSpeed: 5
   maxVerticalSpeed: 5
-  acceleration: 35
-  dodgeForce: 8
-  dodgeDuration: 0.3
+  acceleration: 40
+  dodgeForce: 10
+  dodgeDuration: 0.5
   dodgeCooldown: 1.5
   jumpForce: 5
-  raycastDistance: 0.1
+  raycastDistance: 0.5
   rotationSpeedX: 5
   rotationSpeedY: 2
   maxPitchAngle: 60

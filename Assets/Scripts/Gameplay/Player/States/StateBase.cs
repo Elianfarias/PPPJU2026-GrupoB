@@ -2,7 +2,8 @@ using UnityEngine;
 
 public abstract class StateBase
 {
-    protected static readonly int State = Animator.StringToHash("State");
+    protected static readonly int StateHash = Animator.StringToHash("State");
+
     public StateType StateType;
     protected FsmPlayerManager Manager;
     protected PlayerContext PlayerContext;
@@ -15,8 +16,9 @@ public abstract class StateBase
 
     public virtual void OnEnter()
     {
-        PlayerContext.Animator.SetInteger(State, (int)StateType);
+        PlayerContext.Animator.SetInteger(StateHash, (int)StateType);
     }
+
     public abstract void OnUpdate();
     public abstract void OnFixedUpdate();
     public abstract void OnExit();
