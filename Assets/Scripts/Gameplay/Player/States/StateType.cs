@@ -2,9 +2,10 @@ public enum StateType
 {
     None = -1,
     Idle,
+    Walking,
     Running,
-    Attack,
     Dodge,
     Jump,
+    Attack,
     Dying
 }

@@ -19,12 +19,19 @@ public class StateAttack : StateBase
             nextTimeShoot = Time.time + PlayerContext.Data.CdAttack;
             TryCast();
         }
-        
+
         PlayerContext.AttackPressed = false;
-        Manager.SwitchState(PlayerContext.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
+
+        if (PlayerContext.MoveInput == Vector2.zero)
+            Manager.SwitchState(StateType.Idle);
+        else if (PlayerContext.SprintPressed)
+            Manager.SwitchState(StateType.Running);
+        else
+            Manager.SwitchState(StateType.Walking);
     }
 
-    public override void OnFixedUpdate() {
+    public override void OnFixedUpdate()
+    {
         Manager.ApplyRotation();
     }
     public override void OnExit() { }

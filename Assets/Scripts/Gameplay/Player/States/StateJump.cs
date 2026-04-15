@@ -16,14 +16,25 @@ public class StateJump : StateBase
     public override void OnEnter()
     {
         base.OnEnter();
-        PlayerContext.IsGrounded = false;
         Cursor.lockState = CursorLockMode.Locked;
         ApplyJumpImpulse();
     }
 
     public override void OnUpdate()
     {
-        Manager.SwitchState(PlayerContext.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
+        if (PlayerContext.AttackPressed)
+            Manager.SwitchState(StateType.Attack);
+        if (PlayerContext.Rb.linearVelocity.y > 0.1f) 
+            return;
+        if (!IsGrounded())
+            return;
+
+        if (PlayerContext.MoveInput == Vector2.zero)
+            Manager.SwitchState(StateType.Idle);
+        else if (PlayerContext.SprintPressed)
+            Manager.SwitchState(StateType.Running);
+        else
+            Manager.SwitchState(StateType.Walking);
     }
 
     public override void OnFixedUpdate()
@@ -53,5 +64,12 @@ public class StateJump : StateBase
         Vector3 newHorizontal = Vector3.MoveTowards(currentHorizontal, targetVelocity, PlayerContext.Data.Acceleration * AerialMultiplier * Time.fixedDeltaTime);
 
         PlayerContext.Rb.linearVelocity = new Vector3(newHorizontal.x, PlayerContext.Rb.linearVelocity.y, newHorizontal.z);
+    }
+
+    private bool IsGrounded()
+    {
+        float radius = PlayerContext.CapsuleCollider.radius;
+        Vector3 bottom = PlayerContext.CapsuleCollider.bounds.center - Vector3.up * (PlayerContext.CapsuleCollider.bounds.extents.y - radius);
+        return Physics.SphereCast(bottom, radius * 0.9f, Vector3.down, out _, PlayerContext.Data.RaycastDistance, PlayerContext.Data.LayerCollision);
     }
 }

@@ -28,12 +28,16 @@ public class FsmPlayerManager : MonoBehaviour
             CapsuleCollider = capsuleCollider,
             FirePoint = firePoint,
             FsmPlayerManager = this,
-            IsGrounded = true,
-            OrbInventory = GetComponent<OrbInventory>()
+            OrbInventory = GetComponent<OrbInventory>(),
+            AttackPressed = false,
+            DodgePressed = false,
+            JumpPressed = false,
+            SprintPressed = false
         };
 
         states.Add(new StateIdle());
-        states.Add(new StateMove());
+        states.Add(new StateWalking());
+        states.Add(new StateRunning());
         states.Add(new StateAttack());
         states.Add(new StateJump());
         states.Add(new StateDodge());
@@ -44,12 +48,7 @@ public class FsmPlayerManager : MonoBehaviour
         currentState = FindState(StateType.Idle);
         currentState.OnEnter();
     }
-    private void Update()
-    {
-        currentState.OnUpdate();
-
-        HandleTransitions();
-    }
+    private void Update() { currentState.OnUpdate(); }
     private void FixedUpdate() { currentState.OnFixedUpdate(); }
     private void OnAnimatorIK(int layerIndex) { currentState.OnAnimatorIK(layerIndex); }
     private void OnDrawGizmos()
@@ -80,29 +79,9 @@ public class FsmPlayerManager : MonoBehaviour
         if (value.isPressed)
             ctx.DodgePressed = true;
     }
-
-    private void HandleTransitions()
+    private void OnSprint(InputValue value)
     {
-        ctx.IsGrounded = IsGrounded();
-
-        if (ctx.DodgePressed && ctx.NextDodgeTime <= Time.time)
-        {
-            SwitchState(StateType.Dodge);
-            return;
-        }
-        if (ctx.JumpPressed && ctx.IsGrounded)
-        {
-            SwitchState(StateType.Jump);
-            return;
-        }
-        if (ctx.AttackPressed)
-        {
-            SwitchState(StateType.Attack);
-            return;
-        }
-
-        if (ctx.IsGrounded)
-            SwitchState(ctx.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
+        ctx.SprintPressed = value.isPressed;
     }
 
     private void OnSwitchCamera(InputValue value)
@@ -138,11 +117,5 @@ public class FsmPlayerManager : MonoBehaviour
     {
         float angle = ctx.LookInput.x * ctx.Data.RotationSpeedX * Time.fixedDeltaTime;
         ctx.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
-    }
-
-    private bool IsGrounded()
-    {
-        var origin = capsuleCollider.bounds.center;
-        return Physics.Raycast(origin, Vector3.down, data.RaycastDistance, data.LayerCollision);
     }
 }
