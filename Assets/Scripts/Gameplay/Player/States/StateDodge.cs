@@ -3,7 +3,6 @@
 [RequireComponent(typeof(Rigidbody))]
 public class StateDodge : StateBase
 {
-    private float elapsedTime;
 
     public override void Initialize(FsmPlayerManager fsmManager, PlayerContext playerContext)
     {
@@ -15,28 +14,20 @@ public class StateDodge : StateBase
     {
         base.OnEnter();
         Cursor.lockState = CursorLockMode.Locked;
-        elapsedTime = 0f;
 
         ApplyDodgeImpulse();
         PlayerContext.HealthSystem.SetInvulnerable(true);
     }
 
-    public override void OnUpdate()
-    {
-        elapsedTime += Time.deltaTime;
-
-        if (elapsedTime < PlayerContext.Data.DodgeDuration) return;
-
-        PlayerContext.HealthSystem.SetInvulnerable(false);
-        Manager.SwitchState(PlayerContext.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
-    }
+    public override void OnUpdate() { }
 
     public override void OnFixedUpdate()
     {
         Manager.ApplyRotation();
     }
 
-    public override void OnExit() { 
+    public override void OnExit()
+    {
         PlayerContext.HealthSystem.SetInvulnerable(false);
         PlayerContext.DodgePressed = false;
         PlayerContext.NextDodgeTime = Time.time + PlayerContext.Data.DodgeCooldown;

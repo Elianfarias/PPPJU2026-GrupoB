@@ -118,4 +118,15 @@ public class FsmPlayerManager : MonoBehaviour
         float angle = ctx.LookInput.x * ctx.Data.RotationSpeedX * Time.fixedDeltaTime;
         ctx.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
     }
+
+    public void OnDodgeFinished()
+    {
+        if (currentState.StateType != StateType.Dodge) return;
+
+        var next = ctx.MoveInput != Vector2.zero
+            ? (ctx.SprintPressed ? StateType.Running : StateType.Walking)
+            : StateType.Idle;
+
+        SwitchState(next);
+    }
 }
