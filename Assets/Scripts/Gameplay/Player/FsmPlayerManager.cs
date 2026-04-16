@@ -1,3 +1,4 @@
+using Assets.Scripts.Gameplay.Player.States;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class FsmPlayerManager : MonoBehaviour
     [SerializeField] private GameObject cameraFirstPerson;
 
     private PlayerContext ctx;
-    private readonly IList<StateBase> states = new List<StateBase>();
+    private readonly List<StateBase> rootStates = new();
     private StateBase currentState;
 
     private void Awake()
@@ -28,82 +29,46 @@ public class FsmPlayerManager : MonoBehaviour
             CapsuleCollider = capsuleCollider,
             FirePoint = firePoint,
             FsmPlayerManager = this,
-            IsGrounded = true,
-            OrbInventory = GetComponent<OrbInventory>()
+            OrbInventory = GetComponent<OrbInventory>(),
+            AttackPressed = false,
+            DodgePressed = false,
+            JumpPressed = false,
+            SprintPressed = false
         };
 
-        states.Add(new StateIdle());
-        states.Add(new StateMove());
-        states.Add(new StateAttack());
-        states.Add(new StateJump());
-        states.Add(new StateDodge());
+        rootStates.Add(new StateGrounded());
+        rootStates.Add(new StateAirborne());
+        rootStates.Add(new StateAttack());
+        rootStates.Add(new StateDodge());
 
-        foreach (var state in states)
+        foreach (var state in rootStates)
             state.Initialize(this, ctx);
 
-        currentState = FindState(StateType.Idle);
+        currentState = FindState(StateType.Grounded);
         currentState.OnEnter();
     }
+
     private void Update()
     {
         currentState.OnUpdate();
-
-        HandleTransitions();
     }
+
     private void FixedUpdate() { currentState.OnFixedUpdate(); }
     private void OnAnimatorIK(int layerIndex) { currentState.OnAnimatorIK(layerIndex); }
+
     private void OnDrawGizmos()
     {
+        if (data == null) return;
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, Vector3.down * data.RaycastDistance);
     }
-    private void OnMove(InputValue value)
-    {
-        ctx.MoveInput = value.Get<Vector2>();
-    }
-    private void OnLook(InputValue value)
-    {
-        ctx.LookInput = value.Get<Vector2>();
-    }
-    private void OnAttack(InputValue value)
-    {
-        if (value.isPressed)
-            ctx.AttackPressed = true;
-    }
-    private void OnJump(InputValue value)
-    {
-        if (value.isPressed)
-            ctx.JumpPressed = true;
-    }
-    private void OnDodge(InputValue value)
-    {
-        if (value.isPressed)
-            ctx.DodgePressed = true;
-    }
 
-    private void HandleTransitions()
-    {
-        ctx.IsGrounded = IsGrounded();
-
-        if (ctx.DodgePressed && ctx.NextDodgeTime <= Time.time)
-        {
-            SwitchState(StateType.Dodge);
-            return;
-        }
-        if (ctx.JumpPressed && ctx.IsGrounded)
-        {
-            SwitchState(StateType.Jump);
-            return;
-        }
-        if (ctx.AttackPressed)
-        {
-            SwitchState(StateType.Attack);
-            return;
-        }
-
-        if (ctx.IsGrounded)
-            SwitchState(ctx.MoveInput != Vector2.zero ? StateType.Running : StateType.Idle);
-    }
+    private void OnMove(InputValue value) { ctx.MoveInput = value.Get<Vector2>(); }
+    private void OnLook(InputValue value) { ctx.LookInput = value.Get<Vector2>(); }
+    private void OnAttack(InputValue value) { if (value.isPressed) ctx.AttackPressed = true; }
+    private void OnJump(InputValue value) { if (value.isPressed) ctx.JumpPressed = true; }
+    private void OnDodge(InputValue value) { if (value.isPressed) ctx.DodgePressed = true; }
+    private void OnSprint(InputValue value) { ctx.SprintPressed = value.isPressed; }
 
     private void OnSwitchCamera(InputValue value)
     {
@@ -115,34 +80,61 @@ public class FsmPlayerManager : MonoBehaviour
 
     public void SwitchState(StateType stateType)
     {
-        StateBase next = FindState(stateType);
+        var next = FindState(stateType);
         if (next == null || next == currentState) return;
+
         currentState.OnExit();
         currentState = next;
         currentState.OnEnter();
     }
 
+    public void OnDodgeFinished()
+    {
+        if (currentState.StateType != StateType.Dodge) return;
+        SwitchState(StateType.Grounded);
+    }
+
     public StateBase FindState(StateType stateType)
     {
-        foreach (var state in states)
+        foreach (var state in rootStates)
+        {
+            if (state is CompositeState composite)
+            {
+                var sub = composite.FindSubState(stateType);
+                if (sub != null) return state;
+            }
+
             if (state.StateType == stateType) return state;
+        }
+
         return null;
     }
 
-    public Coroutine StartManagedCoroutine(IEnumerator routine)
+    public Coroutine StartManagedCoroutine(IEnumerator routine) => StartCoroutine(routine);
+
+    public void ReturnFromAttack()
     {
-        return StartCoroutine(routine);
+        var next = FindState(ctx.PreviousRootState);
+        if (next == null) return;
+
+        currentState.OnExit();
+        currentState = next;
+
+        if (next is StateAirborne airborne)
+            airborne.EnterFall();
+        else if (next is CompositeState composite)
+            composite.ReEnter();
+        else
+            next.OnEnter();
     }
 
-    public void ApplyRotation()
+    public void SwitchToFall()
     {
-        float angle = ctx.LookInput.x * ctx.Data.RotationSpeedX * Time.fixedDeltaTime;
-        ctx.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
-    }
+        StateAirborne airborne = FindState(StateType.Airborne) as StateAirborne;
+        if (airborne == null) return;
 
-    private bool IsGrounded()
-    {
-        var origin = capsuleCollider.bounds.center;
-        return Physics.Raycast(origin, Vector3.down, data.RaycastDistance, data.LayerCollision);
+        currentState.OnExit();
+        currentState = airborne;
+        airborne.EnterFall();
     }
 }

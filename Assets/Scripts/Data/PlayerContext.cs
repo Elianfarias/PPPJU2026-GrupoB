@@ -16,6 +16,7 @@ public class PlayerContext
     public OrbInventory OrbInventory;
     public bool JumpPressed;
     public bool DodgePressed;
+    public bool SprintPressed;
     public float NextDodgeTime;
-    public bool IsGrounded;
+    public StateType PreviousRootState;
 }
