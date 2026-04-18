@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Fire
+  - Ice
+  - Wind
+  - Lightning
+  - Poison
+  - Water
   layers:
   - Default
   - TransparentFX
