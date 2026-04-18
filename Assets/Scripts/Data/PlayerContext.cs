@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MoreMountains.Feedbacks;
+using UnityEngine;
 
 public class PlayerContext
 {
@@ -19,4 +20,6 @@ public class PlayerContext
     public bool SprintPressed;
     public float NextDodgeTime;
     public StateType PreviousRootState;
+    public MMF_Player DodgeFeedback;
+    public MMF_Player JumpFeedback;
 }

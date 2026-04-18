@@ -10,5 +10,6 @@ public enum StateType
     Dying,
     Grounded,
     Airborne,
-    Fall
+    Fall,
+    JumpingDown
 }

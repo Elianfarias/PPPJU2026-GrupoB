@@ -1,4 +1,6 @@
 using Assets.Scripts.Gameplay.Player.States;
+using Assets.Scripts.Gameplay.Player.States.SubStates;
+using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +9,8 @@ using UnityEngine.InputSystem;
 public class FsmPlayerManager : MonoBehaviour
 {
     [SerializeField] private PlayerSettingsSO data;
+    [SerializeField] private MMF_Player dodgeFeedback;
+    [SerializeField] private MMF_Player jumpFeedback;
     [SerializeField] private Animator animator;
     [SerializeField] private HealthSystem healthSystem;
     [SerializeField] private CapsuleCollider capsuleCollider;
@@ -33,13 +37,16 @@ public class FsmPlayerManager : MonoBehaviour
             AttackPressed = false,
             DodgePressed = false,
             JumpPressed = false,
-            SprintPressed = false
+            SprintPressed = false,
+            DodgeFeedback = dodgeFeedback,
+            JumpFeedback = jumpFeedback
         };
 
         rootStates.Add(new StateGrounded());
         rootStates.Add(new StateAirborne());
         rootStates.Add(new StateAttack());
         rootStates.Add(new StateDodge());
+        rootStates.Add(new StateJumpingDown());
 
         foreach (var state in rootStates)
             state.Initialize(this, ctx);

@@ -2,21 +2,19 @@
 using Assets.Scripts.Gameplay.Orbs;
 using Assets.Scripts.Gameplay.Player;
 using Assets.Scripts.Gameplay.Systems;
+using MoreMountains.Feedbacks;
 using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 public class OrbPickable : MonoBehaviour, IPickable, IPoolable
 {
-    [Header("Float Animation")]
-    [SerializeField] private float floatAmplitude = 0.3f;
-    [SerializeField] private float floatSpeed = 1.5f;
-    [SerializeField] private float rotationSpeed = 90f;
+    [SerializeField] private MMF_Player onGroundFeedbacks;
+    [SerializeField] private MMWiggle wiggleFeedbacks;
+    [SerializeField] private MMF_Player orbitingFeedbacks;
 
     private OrbSettingsSO orbSettings;
     private OrbPool ownerPool;
-    private Vector3 startPosition;
-    private bool isOrbiting;
 
     public event Action OnReturned;
     public OrbSettingsSO OrbSettings => orbSettings;
@@ -33,18 +31,9 @@ public class OrbPickable : MonoBehaviour, IPickable, IPoolable
 
     public void OnGetFromPool()
     {
-        isOrbiting = false;
-        startPosition = transform.position;
         GetComponent<Collider>().enabled = true;
-    }
-
-    private void Update()
-    {
-        if (isOrbiting) return;
-
-        float yOffset = Mathf.Sin(Time.time * floatSpeed) * floatAmplitude;
-        transform.position = startPosition + Vector3.up * yOffset;
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        wiggleFeedbacks.enabled = true;
+        onGroundFeedbacks.PlayFeedbacks();
     }
 
     public void OnPickup(GameObject picker)
@@ -65,14 +54,17 @@ public class OrbPickable : MonoBehaviour, IPickable, IPoolable
 
     private void EnterOrbitMode(OrbOrbitable orbitController)
     {
-        isOrbiting = true;
+        onGroundFeedbacks.StopFeedbacks();
+        wiggleFeedbacks.enabled = false;
+        orbitingFeedbacks.PlayFeedbacks();
         GetComponent<Collider>().enabled = false;
+        GetComponent<AudioSource>().volume = 0.2f;
         orbitController.RegisterOrb(this);
     }
 
     public void ReturnToPool()
     {
-        isOrbiting = false;
+        orbitingFeedbacks.StopFeedbacks();
         OnReturned?.Invoke();
         OnReturned = null;
         ownerPool.ReturnOrb(this);

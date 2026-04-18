@@ -14,6 +14,7 @@ namespace Assets.Scripts.Gameplay.Player.States.SubStates
         {
             base.OnEnter();
             ApplyJumpImpulse();
+            PlayerContext.JumpFeedback?.PlayFeedbacks();
         }
 
         public override void OnUpdate() { }
@@ -22,6 +23,7 @@ namespace Assets.Scripts.Gameplay.Player.States.SubStates
         public override void OnExit()
         {
             PlayerContext.JumpPressed = false;
+            PlayerContext.JumpFeedback?.StopFeedbacks();
         }
 
         public override void OnAnimatorIK(int layerIndex) { }

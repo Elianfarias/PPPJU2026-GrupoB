@@ -16,7 +16,6 @@ namespace Assets.Scripts.Gameplay.Player.States.SubStates
         public override void OnEnter()
         {
             base.OnEnter();
-            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public override void OnUpdate() { }
