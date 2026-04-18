@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Gameplay.Systems;
-using System;
-using System.Collections;
+﻿using Assets.Scripts.Gameplay.Systems.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
 

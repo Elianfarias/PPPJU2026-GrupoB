@@ -1,3 +1,4 @@
+using Assets.Scripts.Data.Orb;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Player.States
@@ -47,7 +48,7 @@ namespace Assets.Scripts.Gameplay.Player.States
         private void ExecuteSpell(SpellSettingsSO spell)
         {
             var instance = spell.GetPool().GetSpell();
-            instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward, spell.Damage);
+            instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward, spell);
         }
     }
 }

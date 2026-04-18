@@ -1,7 +1,7 @@
 
 using Assets.Scripts.Gameplay.Orbs;
 using Assets.Scripts.Gameplay.Player;
-using Assets.Scripts.Gameplay.Systems;
+using Assets.Scripts.Gameplay.Systems.Interfaces;
 using MoreMountains.Feedbacks;
 using System;
 using UnityEngine;

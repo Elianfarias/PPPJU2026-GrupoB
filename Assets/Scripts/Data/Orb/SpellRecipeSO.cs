@@ -1,3 +1,4 @@
+using Assets.Scripts.Data.Orb;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SpellRecipeSO", menuName = "OrbMage/Spell Recipe")]

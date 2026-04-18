@@ -1,9 +1,8 @@
 ﻿using Assets.Scripts.Gameplay.GameSystem.Object_Pool;
 using Assets.Scripts.Gameplay.Orbs.Spells;
-using Assets.Scripts.Gameplay.Systems;
+using Assets.Scripts.Gameplay.Systems.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class PlayerSpellPool : PoolBase
 {
