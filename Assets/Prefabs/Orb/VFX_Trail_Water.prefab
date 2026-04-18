@@ -693,7 +693,7 @@ MonoBehaviour:
     CurvePingPong: 0
     PauseMin: 0
     PauseMax: 0
-    LimitedTime: 0
+    LimitedTime: 1
     LimitedTimeTotal: 0
     LimitedTimeFalloff:
       serializedVersion: 2
