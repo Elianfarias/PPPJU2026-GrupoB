@@ -20,7 +20,7 @@ MonoBehaviour:
   dodgeDuration: 0.5
   dodgeCooldown: 1.5
   jumpForce: 5
-  raycastDistance: 0.5
+  raycastDistance: 0.2
   rotationSpeedX: 5
   rotationSpeedY: 2
   maxPitchAngle: 60

@@ -12,6 +12,7 @@ namespace Assets.Scripts.Gameplay.Player.States
         {
             base.Initialize(manager, playerContext);
             StateType = StateType.Airborne;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         protected override void RegisterSubStates()
@@ -37,7 +38,7 @@ namespace Assets.Scripts.Gameplay.Player.States
             if (PlayerContext.Rb.linearVelocity.y > 0.1f) return;
             if (!IsGrounded()) return;
 
-            Manager.SwitchState(StateType.Idle);
+            Manager.SwitchState(StateType.JumpingDown);
         }
 
         protected override void OnParentFixedUpdate()

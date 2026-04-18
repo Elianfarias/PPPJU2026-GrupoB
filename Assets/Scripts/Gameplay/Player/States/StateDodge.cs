@@ -14,10 +14,9 @@ namespace Assets.Scripts.Gameplay.Player.States
         public override void OnEnter()
         {
             base.OnEnter();
-            Cursor.lockState = CursorLockMode.Locked;
-
             ApplyDodgeImpulse();
             PlayerContext.HealthSystem.SetInvulnerable(true);
+            PlayerContext.DodgeFeedback?.PlayFeedbacks();
         }
 
         public override void OnUpdate() { }
@@ -32,6 +31,7 @@ namespace Assets.Scripts.Gameplay.Player.States
             PlayerContext.HealthSystem.SetInvulnerable(false);
             PlayerContext.DodgePressed = false;
             PlayerContext.NextDodgeTime = Time.time + PlayerContext.Data.DodgeCooldown;
+            PlayerContext.DodgeFeedback?.StopFeedbacks();
         }
         public override void OnAnimatorIK(int layerIndex) { }
 

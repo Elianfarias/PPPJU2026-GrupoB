@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class OrbInventory : MonoBehaviour
 {
+    [Header("Orb Prefabs")]
+
+
     public const int SlotCount = 2;
     private OrbSettingsSO[] slots = new OrbSettingsSO[SlotCount];
     private int currentSlotIndex = 0;
