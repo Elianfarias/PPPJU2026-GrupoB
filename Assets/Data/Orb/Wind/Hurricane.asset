@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69cce9db8ce00784d9d5fef139b089fd, type: 3}
+  m_Name: Hurricane
+  m_EditorClassIdentifier: Assembly-CSharp::SpellSettingsSO
+  <SpellName>k__BackingField: Hurricane
+  <Description>k__BackingField: Hurricane
+  <SpellId>k__BackingField: Hurricane
+  <Damage>k__BackingField: 100
+  <Speed>k__BackingField: 10
+  <LifeTime>k__BackingField: 5
+  <CastSpellSound>k__BackingField: {fileID: 0}
+  <SpellSound>k__BackingField: {fileID: 0}
+  <ImpactSpellSound>k__BackingField: {fileID: 0}
+  <Stun>k__BackingField:
+    Apply: 0
+    Duration: 0
+  <Knockback>k__BackingField:
+    Apply: 1
+    Force: 15
+  <Slow>k__BackingField:
+    Apply: 0
+    Multiplier: 0
+    Duration: 0
+  <Burn>k__BackingField:
+    Apply: 0
+    DamagePerSecond: 0
+    Duration: 0
+  <Root>k__BackingField:
+    Apply: 0
+    Duration: 0

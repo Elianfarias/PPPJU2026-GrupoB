@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellBookSO
   recipes:
   - {fileID: 11400000, guid: 451d9119e097d7d488131086a1d31763, type: 2}
-  - {fileID: 11400000, guid: 04836a20ab22e664f8ba9906056366bb, type: 2}
+  - {fileID: 11400000, guid: 726c872d82fe8454e8a439a769137259, type: 2}
+  - {fileID: 11400000, guid: 38548df82ade396438bbf514041bc4a6, type: 2}

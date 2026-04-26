@@ -1,26 +1,28 @@
+using Assets.Scripts.Data.Orb;
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SpellBookSO", menuName = "OrbMage/Spell Book")]
 public class SpellBookSO : ScriptableObject
 {
-    [SerializeField] private SpellRecipeSO[] recipes;
-
-    public bool TryGetSpell(OrbElement a, OrbElement b, out SpellSettingsSO result)
+    [Serializable]
+    private struct ElementSpellEntry
     {
-        foreach (var recipe in recipes)
-        {
-            if (!recipe.Matches(a, b)) continue;
-
-            result = recipe.Result;
-            return true;
-        }
-
-        result = null;
-        return false;
+        public OrbElement Element;
+        public SpellSettingsSO Spell;
     }
 
-    public void getElements(out int a)
+    [SerializeField] private ElementSpellEntry[] entries;
+
+    public bool TryGetSpell(OrbElement element, out SpellSettingsSO spell)
     {
-        a = 1;
+        foreach (var entry in entries)
+        {
+            if (entry.Element != element) continue;
+            spell = entry.Spell;
+            return true;
+        }
+        spell = null;
+        return false;
     }
 }

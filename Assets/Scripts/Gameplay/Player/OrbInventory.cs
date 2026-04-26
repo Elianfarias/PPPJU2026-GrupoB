@@ -1,48 +1,38 @@
 using System;
 using UnityEngine;
 
-public class OrbInventory : MonoBehaviour
+namespace Assets.Scripts.Gameplay.Player
 {
-    [Header("Orb Prefabs")]
-
-
-    public const int SlotCount = 2;
-    private OrbSettingsSO[] slots = new OrbSettingsSO[SlotCount];
-    private int currentSlotIndex = 0;
-
-    public event Action<int, OrbSettingsSO> OnSlotChanged;
-
-    public OrbSettingsSO GetSlot(int index) => slots[index];
-
-    public bool TryAddOrb(OrbSettingsSO orbData)
+    public class OrbInventory : MonoBehaviour
     {
-        if (currentSlotIndex >= SlotCount) return false;
+        public const int SlotCount = 2;
+        private OrbSettingsSO[] slots = new OrbSettingsSO[SlotCount];
 
-        slots[currentSlotIndex] = orbData;
-        OnSlotChanged?.Invoke(currentSlotIndex, orbData);
-        currentSlotIndex++;
-        return true;
-    }
+        public event Action<int, OrbSettingsSO> OnSlotChanged;
 
-    public bool TryConsumeOrbs(out OrbSettingsSO first, out OrbSettingsSO second)
-    {
-        first = slots[0];
-        second = slots[1];
+        public OrbSettingsSO GetSlot(int index) => slots[index];
 
-        if (first == null || second == null) return false;
-
-        ClearSlots();
-        return true;
-    }
-
-    private void ClearSlots()
-    {
-        for (int i = 0; i < SlotCount; i++)
+        public bool TryAddOrb(OrbSettingsSO orbData)
         {
-            slots[i] = null;
-            OnSlotChanged?.Invoke(i, null);
+            for (int i = 0; i < SlotCount; i++)
+            {
+                if (slots[i] != null) continue;
+
+                slots[i] = orbData;
+                OnSlotChanged?.Invoke(i, orbData);
+                return true;
+            }
+            return false;
         }
 
-        currentSlotIndex = 0;
+        public bool TryConsumeSlot(int index, out OrbSettingsSO orb)
+        {
+            orb = slots[index];
+            if (orb == null) return false;
+
+            slots[index] = null;
+            OnSlotChanged?.Invoke(index, null);
+            return true;
+        }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using Assets.Scripts.Gameplay.GameSystem.Object_Pool;
-using Assets.Scripts.Gameplay.Systems;
+using Assets.Scripts.Gameplay.Systems.Interfaces;
 
 namespace Assets.Scripts.Gameplay.Orbs
 {

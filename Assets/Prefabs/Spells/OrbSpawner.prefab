@@ -50,6 +50,6 @@ MonoBehaviour:
   spawnHeightOffset: 1
   elementWeights:
   - <Pool>k__BackingField: {fileID: 0}
-    <Weight>k__BackingField: 5
+    <Weight>k__BackingField: 6
   - <Pool>k__BackingField: {fileID: 0}
-    <Weight>k__BackingField: 5
+    <Weight>k__BackingField: 2

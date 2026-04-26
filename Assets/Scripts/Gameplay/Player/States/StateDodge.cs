@@ -30,7 +30,6 @@ namespace Assets.Scripts.Gameplay.Player.States
         {
             PlayerContext.HealthSystem.SetInvulnerable(false);
             PlayerContext.DodgePressed = false;
-            PlayerContext.NextDodgeTime = Time.time + PlayerContext.Data.DodgeCooldown;
             PlayerContext.DodgeFeedback?.StopFeedbacks();
         }
         public override void OnAnimatorIK(int layerIndex) { }
