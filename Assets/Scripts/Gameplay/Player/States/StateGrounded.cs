@@ -31,7 +31,7 @@ namespace Assets.Scripts.Gameplay.Player.States
                 return;
             }
 
-            if (PlayerContext.DodgePressed && PlayerContext.NextDodgeTime <= Time.time)
+            if (PlayerContext.DodgePressed)
             {
                 Manager.SwitchState(StateType.Dodge);
                 return;
@@ -66,8 +66,17 @@ namespace Assets.Scripts.Gameplay.Player.States
 
         private void ApplyRotation()
         {
-            float angle = PlayerContext.LookInput.x * PlayerContext.Data.RotationSpeedX * Time.fixedDeltaTime;
-            PlayerContext.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
+            if (PlayerContext.MoveInput == Vector2.zero) return;
+
+            Vector3 moveDirection = new(PlayerContext.MoveInput.x, 0f, PlayerContext.MoveInput.y);
+            Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(moveDirection);
+
+            Quaternion targetRotation = Quaternion.LookRotation(worldDirection);
+            PlayerContext.FsmPlayerManager.transform.rotation = Quaternion.Lerp(
+                PlayerContext.FsmPlayerManager.transform.rotation,
+                targetRotation,
+                Time.fixedDeltaTime * PlayerContext.Data.RotationSpeedX
+            );
         }
 
         private bool IsGrounded()

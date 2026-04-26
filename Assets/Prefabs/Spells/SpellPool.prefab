@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 263132102565018793}
   - component: {fileID: 685014797868442038}
   m_Layer: 0
-  m_Name: SpellPoolWindGust
+  m_Name: SpellPoolHurricane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
   defaultCapacity: 5
   maxSize: 5
-  spellId: WindGust
+  spellId: Hurricane
   spellPrefab: {fileID: 1041300845513864772, guid: 97adbc81fab65674588e2da6667a07e6, type: 3}
 --- !u!1 &3674197785280959697
 GameObject:
@@ -176,5 +176,54 @@ Transform:
   - {fileID: 5700925426180020854}
   - {fileID: 7152036288041479696}
   - {fileID: 263132102565018793}
+  - {fileID: 2548350288665304184}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6401792446296974849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2548350288665304184}
+  - component: {fileID: 1366898659277611046}
+  m_Layer: 0
+  m_Name: SpellPoolLightingSlash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2548350288665304184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6401792446296974849}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7556125177007478200}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1366898659277611046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6401792446296974849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
+  defaultCapacity: 5
+  maxSize: 5
+  spellId: LightingSlash
+  spellPrefab: {fileID: 3020920808754819069, guid: d860dbff6d19af4448c7d0e478fa5cef, type: 3}

@@ -37,11 +37,11 @@ namespace Assets.Scripts.Gameplay.Player.States
         {
             if (nextTimeCast > Time.time) return;
 
+            int slotIndex = PlayerContext.LeftAttackPressed ? 0 : 1;
+            if (!PlayerContext.OrbInventory.TryConsumeSlot(slotIndex, out var orb)) return;
+            if (!PlayerContext.Data.SpellBook.TryGetSpell(orb.Element, out var spell)) return;
+
             nextTimeCast = Time.time + PlayerContext.Data.CdAttack;
-
-            if (!PlayerContext.OrbInventory.TryConsumeOrbs(out var first, out var second)) return;
-            if (!PlayerContext.Data.SpellBook.TryGetSpell(first.Element, second.Element, out var spell)) return;
-
             ExecuteSpell(spell);
         }
 

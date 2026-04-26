@@ -4,46 +4,49 @@ using Assets.Scripts.Gameplay.Systems.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpellPool : PoolBase
+namespace Assets.Scripts.Gameplay.Player
 {
-    [SerializeField] private string spellId;
-
-    private static Dictionary<string, PlayerSpellPool> registry = new();
-    [SerializeField] private GameObject spellPrefab;
-
-    private void Awake()
+    public class PlayerSpellPool : PoolBase
     {
-        registry[spellId] = this;
-        Initialize();
-    }
+        [SerializeField] private string spellId;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-    }
+        private static Dictionary<string, PlayerSpellPool> registry = new();
+        [SerializeField] private GameObject spellPrefab;
 
-    public static PlayerSpellPool Get(string spellId)
-    {
-        registry.TryGetValue(spellId, out var pool);
-        return pool;
-    }
+        private void Awake()
+        {
+            registry[spellId] = this;
+            Initialize();
+        }
 
-    public SpellBase GetSpell()
-    {
-        var spell = Get() as SpellBase;
-        spell.SetPool(this);
-        return spell;
-    }
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
 
-    public void ReturnSpell(SpellBase spell)
-    {
-        Return(spell);
-    }
+        public static PlayerSpellPool Get(string spellId)
+        {
+            registry.TryGetValue(spellId, out var pool);
+            return pool;
+        }
 
-    protected override IPoolable CreateNew()
-    {
-        var obj = Instantiate(spellPrefab, transform);
-        obj.SetActive(false);
-        return obj.GetComponent<SpellBase>();
+        public SpellBase GetSpell()
+        {
+            var spell = Get() as SpellBase;
+            spell.SetPool(this);
+            return spell;
+        }
+
+        public void ReturnSpell(SpellBase spell)
+        {
+            Return(spell);
+        }
+
+        protected override IPoolable CreateNew()
+        {
+            var obj = Instantiate(spellPrefab, transform);
+            obj.SetActive(false);
+            return obj.GetComponent<SpellBase>();
+        }
     }
 }

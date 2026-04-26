@@ -1,3 +1,6 @@
+using Assets.Scripts.Data.Elemental;
+using Assets.Scripts.Gameplay.Player;
+using Assets.Scripts.Gameplay.System.Enums;
 using UnityEngine;
 
 namespace Assets.Scripts.Data.Orb
@@ -11,16 +14,18 @@ namespace Assets.Scripts.Data.Orb
         [field: SerializeField] public float Damage { get; private set; }
         [field: SerializeField] public float Speed { get; private set; }
         [field: SerializeField] public float LifeTime { get; private set; }
+
+        [Header("Elemental")]
+        [field: SerializeField] public ElementalNature Nature { get; private set; }
+        [field: SerializeField] public ElementalStateData AppliedState { get; private set; }
+
+        [Header("Knockback")]
+        [field: SerializeField] public KnockbackEffect Knockback { get; private set; }
+
+        [Header("Audio")]
         [field: SerializeField] public AudioClip CastSpellSound { get; private set; }
         [field: SerializeField] public AudioClip SpellSound { get; private set; }
         [field: SerializeField] public AudioClip ImpactSpellSound { get; private set; }
-
-        [Header("Status Effects")]
-        [field: SerializeField] public StunEffect Stun { get; private set; }
-        [field: SerializeField] public KnockbackEffect Knockback { get; private set; }
-        [field: SerializeField] public SlowEffect Slow { get; private set; }
-        [field: SerializeField] public BurnEffect Burn { get; private set; }
-        [field: SerializeField] public RootEffect Root { get; private set; }
 
         public PlayerSpellPool GetPool() => PlayerSpellPool.Get(SpellId);
     }
