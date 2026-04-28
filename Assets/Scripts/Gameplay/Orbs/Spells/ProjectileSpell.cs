@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Data.Orb;
+using Assets.Scripts.Gameplay.System.Elemental;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Orbs.Spells
@@ -48,13 +49,20 @@ namespace Assets.Scripts.Gameplay.Orbs.Spells
         private void OnCollisionEnter(Collision collision)
         {
             if (hasHit) return;
-            foreach (ContactPoint hit in collision.contacts)
-            {
-                if (hit.thisCollider.TryGetComponent<HealthSystem>(out var health))
-                    health.DoDamage(spellSettings.Damage);
 
-                ApplyStatusEffect(hit.thisCollider);
-            }
+            GameObject hitRoot = collision.rigidbody != null
+                ? collision.rigidbody.gameObject
+                : collision.collider.gameObject;
+
+            if (hitRoot.TryGetComponent<HealthSystem>(out var health))
+                health.DoDamage(spellSettings.Damage);
+
+            if (hitRoot.TryGetComponent<ElementalStateHandler>(out var handler))
+                ApplyStatusEffect(handler, hitRoot);
+
+            hasHit = true;
+            OnHit();
+            ReturnToPool();
         }
 
         protected virtual Vector3 CalculatePosition(float t)

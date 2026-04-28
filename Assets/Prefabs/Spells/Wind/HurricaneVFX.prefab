@@ -527,7 +527,6 @@ MonoBehaviour:
   spellSettings: {fileID: 11400000, guid: 435b4ee08e3f7e845b5a44a7cf31c646, type: 2}
   impactFeedbacks: {fileID: 4444547355431751869}
   spellParticles: []
-  vfxDuration: 1
 --- !u!54 &4987642965388590803
 Rigidbody:
   m_ObjectHideFlags: 0

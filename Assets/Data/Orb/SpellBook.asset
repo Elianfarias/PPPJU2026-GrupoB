@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b6c98285b6fd847929536eab5a026b, type: 3}
   m_Name: SpellBook
   m_EditorClassIdentifier: Assembly-CSharp::SpellBookSO
-  recipes:
-  - {fileID: 11400000, guid: 451d9119e097d7d488131086a1d31763, type: 2}
-  - {fileID: 11400000, guid: 726c872d82fe8454e8a439a769137259, type: 2}
-  - {fileID: 11400000, guid: 38548df82ade396438bbf514041bc4a6, type: 2}
+  entries:
+  - Element: 0
+    Spell: {fileID: 11400000, guid: 714237fe18b37ed4e89744bbb2b21ce7, type: 2}
+  - Element: 1
+    Spell: {fileID: 11400000, guid: fd5757ae0d2ebb64295c6666d3c88f60, type: 2}
+  - Element: 3
+    Spell: {fileID: 11400000, guid: 3faf74dfdf3c158498dbd15e09be61df, type: 2}
+  - Element: 2
+    Spell: {fileID: 11400000, guid: 435b4ee08e3f7e845b5a44a7cf31c646, type: 2}

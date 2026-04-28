@@ -36,7 +36,8 @@ namespace Assets.Scripts.Gameplay.Player
                 FirePoint = firePoint,
                 FsmPlayerManager = this,
                 OrbInventory = GetComponent<OrbInventory>(),
-                AttackPressed = false,
+                LeftAttackPressed = false,
+                RightAttackPressed = false,
                 DodgePressed = false,
                 JumpPressed = false,
                 SprintPressed = false,
@@ -74,7 +75,8 @@ namespace Assets.Scripts.Gameplay.Player
 
         private void OnMove(InputValue value) { ctx.MoveInput = value.Get<Vector2>(); }
         private void OnLook(InputValue value) { ctx.LookInput = value.Get<Vector2>(); }
-        private void OnAttack(InputValue value) { if (value.isPressed) ctx.AttackPressed = true; }
+        private void OnRightAttack(InputValue value) { if (value.isPressed) ctx.RightAttackPressed = true; }
+        private void OnLeftAttack(InputValue value) { if (value.isPressed) ctx.LeftAttackPressed = true; }
         private void OnJump(InputValue value) { if (value.isPressed) ctx.JumpPressed = true; }
         private void OnDodge(InputValue value) { if (value.isPressed) ctx.DodgePressed = true; }
         private void OnSprint(InputValue value) { ctx.SprintPressed = value.isPressed; }
@@ -139,8 +141,7 @@ namespace Assets.Scripts.Gameplay.Player
 
         public void SwitchToFall()
         {
-            StateAirborne airborne = FindState(StateType.Airborne) as StateAirborne;
-            if (airborne == null) return;
+            if (FindState(StateType.Airborne) is not StateAirborne airborne) return;
 
             currentState.OnExit();
             currentState = airborne;

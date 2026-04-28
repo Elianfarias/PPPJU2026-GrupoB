@@ -612,7 +612,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826059589380599827}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 347013242dca7c44fb5001793033ea59, type: 3}
   m_Name: 
@@ -1414,7 +1414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6154777062763832164, guid: 1243e9d75b98a1042a73ecb00ba30918, type: 3}
       propertyPath: m_Range
-      value: 17.549154
+      value: 17.950832
       objectReference: {fileID: 0}
     - target: {fileID: 6154777062763832164, guid: 1243e9d75b98a1042a73ecb00ba30918, type: 3}
       propertyPath: m_Color.b
@@ -1430,7 +1430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6154777062763832164, guid: 1243e9d75b98a1042a73ecb00ba30918, type: 3}
       propertyPath: m_Intensity
-      value: 3.4549153
+      value: 3.495083
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

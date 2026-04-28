@@ -16,12 +16,12 @@ MonoBehaviour:
   maxHorizontalSpeed: 5
   maxVerticalSpeed: 5
   acceleration: 40
-  dodgeForce: 10
+  dodgeForce: 1000
   dodgeDuration: 0.5
-  dodgeCooldown: 1.5
-  jumpForce: 5
+  dodgeCooldown: 0
+  jumpForce: 300
   raycastDistance: 0.2
-  rotationSpeedX: 5
+  rotationSpeedX: 2.5
   rotationSpeedY: 2
   maxPitchAngle: 60
   tiltSpeed: 8
@@ -32,7 +32,6 @@ MonoBehaviour:
   multiplyDamageCollision: 2
   spellBook: {fileID: 11400000, guid: c0c2e74752e231e4b948a887642a11b8, type: 2}
   cdAttack: 2
-  cdRope: 5
   volumeMusic: 0
   volumeSFX: 0
   volumeUI: 0

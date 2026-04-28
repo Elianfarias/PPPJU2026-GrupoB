@@ -44,12 +44,13 @@ namespace Assets.Scripts.Gameplay.Player.States
                 return;
             }
 
-            if (PlayerContext.AttackPressed)
+            if (PlayerContext.LeftAttackPressed || PlayerContext.RightAttackPressed)
             {
                 PlayerContext.PreviousRootState = StateType.Grounded;
                 Manager.SwitchState(StateType.Attack);
                 return;
             }
+
 
             if (PlayerContext.MoveInput == Vector2.zero)
                 SwitchSubState(StateType.Idle);

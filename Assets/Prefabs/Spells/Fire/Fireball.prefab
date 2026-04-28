@@ -96,12 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc850e8ba3e2b924f8c42c3bbbf89d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileController
-  speed: 50
-  lifetime: 5
-  damage: 25
-  explosionPrefab: {fileID: 1764654978243476, guid: 27409424189b07a4cb4117810fb139e8, type: 3}
-  flightParticles: {fileID: 2200043165413106724}
-  projectileMesh: {fileID: 6244949718692333001}
+  spellSettings: {fileID: 11400000, guid: 714237fe18b37ed4e89744bbb2b21ce7, type: 2}
+  explosionSettings: {fileID: 11400000, guid: 5e3ba7134252948418298c51e325e0c3, type: 2}
 --- !u!82 &120734446188070294
 AudioSource:
   m_ObjectHideFlags: 0
@@ -283,11 +279,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6244949718692333001}
   m_SourcePrefab: {fileID: 100100000, guid: 6f65cbd12014dc647a7d642eb128d79c, type: 3}
---- !u!198 &2200043165413106724 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3792886660485448812, guid: 6f65cbd12014dc647a7d642eb128d79c, type: 3}
-  m_PrefabInstance: {fileID: 3038546323192471624}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7849708630773788305 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5099431166652583641, guid: 6f65cbd12014dc647a7d642eb128d79c, type: 3}

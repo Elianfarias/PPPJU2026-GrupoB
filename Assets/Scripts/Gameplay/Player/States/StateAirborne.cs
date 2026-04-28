@@ -28,7 +28,7 @@ namespace Assets.Scripts.Gameplay.Player.States
 
         protected override void HandleParentTransitions()
         {
-            if (PlayerContext.AttackPressed)
+            if (PlayerContext.LeftAttackPressed || PlayerContext.RightAttackPressed)
             {
                 PlayerContext.PreviousRootState = StateType.Airborne;
                 Manager.SwitchState(StateType.Attack);

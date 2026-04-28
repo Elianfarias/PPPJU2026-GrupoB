@@ -15,26 +15,14 @@ MonoBehaviour:
   <SpellName>k__BackingField: Fireball
   <Description>k__BackingField: fireball
   <SpellId>k__BackingField: Fireball
-  <Damage>k__BackingField: 100
+  <Damage>k__BackingField: 0
   <Speed>k__BackingField: 10
   <LifeTime>k__BackingField: 5
-  <CastSpellSound>k__BackingField: {fileID: 0}
-  <SpellSound>k__BackingField: {fileID: 0}
-  <ImpactSpellSound>k__BackingField: {fileID: 0}
-  <Stun>k__BackingField:
-    Apply: 0
-    Duration: 0
+  <Nature>k__BackingField: 0
+  <AppliedState>k__BackingField: {fileID: 0}
   <Knockback>k__BackingField:
     Apply: 0
     Force: 0
-  <Slow>k__BackingField:
-    Apply: 0
-    Multiplier: 0
-    Duration: 0
-  <Burn>k__BackingField:
-    Apply: 1
-    DamagePerSecond: 10
-    Duration: 2
-  <Root>k__BackingField:
-    Apply: 0
-    Duration: 0
+  <CastSpellSound>k__BackingField: {fileID: 0}
+  <SpellSound>k__BackingField: {fileID: 0}
+  <ImpactSpellSound>k__BackingField: {fileID: 0}

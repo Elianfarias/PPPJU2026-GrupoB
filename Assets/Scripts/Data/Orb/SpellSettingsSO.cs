@@ -14,6 +14,7 @@ namespace Assets.Scripts.Data.Orb
         [field: SerializeField] public float Damage { get; private set; }
         [field: SerializeField] public float Speed { get; private set; }
         [field: SerializeField] public float LifeTime { get; private set; }
+        [field: SerializeField] public float VfxDuration { get; private set; } = 0.5f;
 
         [Header("Elemental")]
         [field: SerializeField] public ElementalNature Nature { get; private set; }

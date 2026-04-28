@@ -9,11 +9,11 @@ namespace Assets.Scripts.Gameplay.Enemy
     public class FsmEnemyManager : MonoBehaviour
     {
         [SerializeField] private EnemySettingsSO enemySettingsSO;
-        [SerializeField] NavMeshAgent _agent;
-        [SerializeField] Animator animator;
-        [SerializeField] HealthSystem healthSystem;
-        [SerializeField] CapsuleCollider capsuleCollider;
-        [SerializeField] Transform firePoint;
+        [SerializeField] private NavMeshAgent _agent;
+        [SerializeField] private Animator animator;
+        [SerializeField] private HealthSystem healthSystem;
+        [SerializeField] private CapsuleCollider capsuleCollider;
+        [SerializeField] private Transform firePoint;
 
         private readonly IList<StateBase> stateBases = new List<StateBase>();
         private StateBase currentState;

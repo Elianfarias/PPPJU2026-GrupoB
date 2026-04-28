@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 69cce9db8ce00784d9d5fef139b089fd, type: 3}
-  m_Name: Hurricane
+  m_Name: Iceball
   m_EditorClassIdentifier: Assembly-CSharp::SpellSettingsSO
-  <SpellName>k__BackingField: Hurricane
-  <Description>k__BackingField: Hurricane
-  <SpellId>k__BackingField: Hurricane
+  <SpellName>k__BackingField: Fireball
+  <Description>k__BackingField: fireball
+  <SpellId>k__BackingField: Fireball
   <Damage>k__BackingField: 100
   <Speed>k__BackingField: 10
   <LifeTime>k__BackingField: 5
-  <Nature>k__BackingField: 3
-  <AppliedState>k__BackingField: {fileID: 0}
+  <Nature>k__BackingField: 2
+  <AppliedState>k__BackingField: {fileID: 11400000, guid: 2e7d6ac4d1063214bac70447c43e2f32, type: 2}
   <Knockback>k__BackingField:
-    Apply: 1
-    Force: 15
+    Apply: 0
+    Force: 0
   <CastSpellSound>k__BackingField: {fileID: 0}
   <SpellSound>k__BackingField: {fileID: 0}
   <ImpactSpellSound>k__BackingField: {fileID: 0}

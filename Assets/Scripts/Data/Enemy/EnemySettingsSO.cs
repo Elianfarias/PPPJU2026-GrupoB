@@ -11,7 +11,6 @@ public class EnemySettingsSO : ScriptableObject
     [SerializeField] private float wanderCooldown = 2f;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private LayerMask ropeLayer;
     [SerializeField] private float attackCooldown = 1.5f;
 
     public int Damage { get { return damage; } }
@@ -22,6 +21,5 @@ public class EnemySettingsSO : ScriptableObject
     public float WanderCooldown { get { return wanderCooldown; } }
     public LayerMask PlayerLayer { get { return playerLayer; } }
     public LayerMask EnemyLayer { get { return enemyLayer; } }
-    public LayerMask RopeLayer { get { return ropeLayer; } }
     public float AttackCooldown { get { return attackCooldown; } }
 }

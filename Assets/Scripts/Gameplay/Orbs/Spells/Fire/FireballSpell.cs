@@ -1,27 +1,37 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Data.Orb;
+using Assets.Scripts.Gameplay.System.Elemental;
+using UnityEngine;
 
-namespace Assets.Scripts.Gameplay.Orbs.Spells
+namespace Assets.Scripts.Gameplay.Orbs.Spells.Fire
 {
     public class FireballSpell : ProjectileSpell
     {
-        [SerializeField] private GameObject explosionPrefab;
+        [Header("Explosion")]
+        [SerializeField] private SpellSettingsSO explosionSettings;
+
+        public override void ApplyStatusEffect(ElementalStateHandler handler, GameObject hitRoot)
+        {
+        }
 
         protected override void OnHit()
         {
-            Explode();
+            base.OnHit();
+            SpawnExplosion();
         }
 
-        private void Explode()
+        private void SpawnExplosion()
         {
-            hasHit = true;
+            if (explosionSettings == null) return;
 
-            if (explosionPrefab != null)
-                Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            var pool = explosionSettings.GetPool();
+            if (pool == null)
+            {
+                Debug.LogError($"No hay pool registrado para SpellId: {explosionSettings.SpellId}");
+                return;
+            }
 
-            foreach (var col in GetComponents<Collider>())
-                col.enabled = false;
-
-            ReturnToPool();
+            var explosion = pool.GetSpell();
+            explosion.Execute(transform.position, Vector3.up, explosionSettings);
         }
     }
 }

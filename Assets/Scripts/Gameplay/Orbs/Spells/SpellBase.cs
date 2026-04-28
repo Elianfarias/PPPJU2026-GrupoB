@@ -3,6 +3,7 @@ using Assets.Scripts.Gameplay.Player;
 using Assets.Scripts.Gameplay.System.Elemental;
 using Assets.Scripts.Gameplay.System.Interfaces;
 using Assets.Scripts.Gameplay.Systems.Interfaces;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Orbs.Spells
@@ -30,25 +31,23 @@ namespace Assets.Scripts.Gameplay.Orbs.Spells
             this.direction = direction;
         }
 
-        public virtual void ApplyStatusEffect(Collider target)
+        public virtual void ApplyStatusEffect(ElementalStateHandler handler, GameObject hitRoot)
         {
-            ApplyKnockback(target);
-            ApplyElemental(target);
+            ApplyKnockback(hitRoot);
+            ApplyElemental(handler, hitRoot);
         }
 
-        private void ApplyKnockback(Collider target)
+        private void ApplyKnockback(GameObject hitRoot)
         {
             if (!spellSettings.Knockback.Apply) return;
-            if (!target.TryGetComponent<IKnockbackable>(out var knockback)) return;
+            if (!hitRoot.TryGetComponent<IKnockbackable>(out var knockback)) return;
 
             knockback.ApplyKnockback(direction, spellSettings.Knockback.Force);
         }
 
-        private void ApplyElemental(Collider target)
+        private void ApplyElemental(ElementalStateHandler handler, GameObject hitRoot)
         {
-            if (!target.TryGetComponent<ElementalStateHandler>(out var handler)) return;
-
-            if (target.TryGetComponent<ReactionResolver>(out var resolver))
+            if (hitRoot.TryGetComponent<ReactionResolver>(out var resolver))
             {
                 if (resolver.TryResolve(spellSettings.Nature, gameObject)) return;
             }
@@ -62,6 +61,22 @@ namespace Assets.Scripts.Gameplay.Orbs.Spells
         protected void ReturnToPool()
         {
             ownerPool.ReturnSpell(this);
+        }
+
+        protected void ReturnAfterDelay(float delay)
+        {
+            if (delay <= 0f)
+            {
+                ReturnToPool();
+                return;
+            }
+            StartCoroutine(ReturnAfterDelayRoutine(delay));
+        }
+
+        private IEnumerator ReturnAfterDelayRoutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            ReturnToPool();
         }
     }
 }

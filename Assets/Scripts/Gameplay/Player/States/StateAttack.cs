@@ -17,13 +17,13 @@ namespace Assets.Scripts.Gameplay.Player.States
         {
             base.OnEnter();
             PlayerContext.JumpPressed = false;
-            PlayerContext.AttackPressed = false;
+            PlayerContext.LeftAttackPressed = false;
+            PlayerContext.RightAttackPressed = false;
             TryCast();
         }
 
         public override void OnUpdate()
         {
-            PlayerContext.AttackPressed = false;
             Manager.ReturnFromAttack();
         }
 
