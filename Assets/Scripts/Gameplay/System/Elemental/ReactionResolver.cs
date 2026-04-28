@@ -34,7 +34,6 @@ namespace Assets.Scripts.Gameplay.System.Elemental
             }
             return false;
         }
-
         private void ExecuteReaction(ReactionRecipeSO recipe, GameObject source)
         {
             if (recipe.VfxPrefab != null)

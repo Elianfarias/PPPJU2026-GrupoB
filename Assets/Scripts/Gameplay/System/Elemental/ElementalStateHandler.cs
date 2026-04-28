@@ -42,6 +42,7 @@ namespace Assets.Scripts.Gameplay.System.Elemental
             var newState = new ActiveElementalState(data, source, vfx);
             activeStates.Add(newState);
             OnStateApplied?.Invoke(newState);
+
         }
 
         public bool RemoveState(ElementalStateType type)
@@ -51,6 +52,7 @@ namespace Assets.Scripts.Gameplay.System.Elemental
             activeStates.Remove(state);
             DespawnVfx(state);
             OnStateRemoved?.Invoke(state);
+
             return true;
         }
 
