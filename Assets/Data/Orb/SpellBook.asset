@@ -21,3 +21,5 @@ MonoBehaviour:
     Spell: {fileID: 11400000, guid: 3faf74dfdf3c158498dbd15e09be61df, type: 2}
   - Element: 2
     Spell: {fileID: 11400000, guid: 435b4ee08e3f7e845b5a44a7cf31c646, type: 2}
+  - Element: 5
+    Spell: {fileID: 11400000, guid: 6ef9e079f77a75f4db1d5202d06cff54, type: 2}

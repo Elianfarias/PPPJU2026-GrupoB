@@ -48,6 +48,54 @@ MonoBehaviour:
   maxSize: 5
   spellId: Hurricane
   spellPrefab: {fileID: 1041300845513864772, guid: 97adbc81fab65674588e2da6667a07e6, type: 3}
+--- !u!1 &1911608858942477039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3949368123191733379}
+  - component: {fileID: 508889232301841643}
+  m_Layer: 0
+  m_Name: SpellPoolWaterPuddle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3949368123191733379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911608858942477039}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7556125177007478200}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &508889232301841643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911608858942477039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
+  defaultCapacity: 5
+  maxSize: 5
+  spellId: WaterRay
+  spellPrefab: {fileID: 3691486366353800710, guid: 413554a94a53d6c43a7292b663ec180e, type: 3}
 --- !u!1 &3674197785280959697
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +191,7 @@ MonoBehaviour:
   defaultCapacity: 5
   maxSize: 5
   spellId: WaterRay
-  spellPrefab: {fileID: 4092872357349286730, guid: 6cfac5402b689bf4b940d8c67d674a8a, type: 3}
+  spellPrefab: {fileID: 3291158807889880023, guid: 66c3cc82f06eb6f41b2db526607e3fa2, type: 3}
 --- !u!1 &6049325456089258567
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +224,7 @@ Transform:
   - {fileID: 5700925426180020854}
   - {fileID: 7605843988361645117}
   - {fileID: 7152036288041479696}
+  - {fileID: 3949368123191733379}
   - {fileID: 263132102565018793}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

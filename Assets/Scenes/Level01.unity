@@ -247,12 +247,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
       propertyPath: elementWeights.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
       propertyPath: elementWeights.Array.data[0].<Pool>k__BackingField
       value: 
-      objectReference: {fileID: 974754616}
+      objectReference: {fileID: 1345458664}
     - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
       propertyPath: elementWeights.Array.data[1].<Pool>k__BackingField
       value: 
@@ -261,6 +261,10 @@ PrefabInstance:
       propertyPath: elementWeights.Array.data[2].<Pool>k__BackingField
       value: 
       objectReference: {fileID: 2006941422}
+    - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
+      propertyPath: elementWeights.Array.data[0].<Weight>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
       propertyPath: elementWeights.Array.data[2].<Weight>k__BackingField
       value: 2
@@ -538,6 +542,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2112139191247025294, guid: ee12d398392572e4b9132221a33e8c08, type: 3}
+      propertyPath: orbSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f1b758e26546374999270d8ce2af387, type: 2}
     - target: {fileID: 6552727269976396971, guid: ee12d398392572e4b9132221a33e8c08, type: 3}
       propertyPath: m_LocalPosition.x
       value: 385.26086
@@ -744,17 +752,6 @@ MonoBehaviour:
   RemapColorZero: 0
   RemapColorOne: 1
   TargetColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &974754616 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 716383733158963931, guid: ee12d398392572e4b9132221a33e8c08, type: 3}
-  m_PrefabInstance: {fileID: 713763711}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6a0933b2a828ad43a65ee508c1aa482, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Gameplay.Orbs.OrbPool
 --- !u!1 &1155638405
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,6 +868,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 508889232301841643, guid: 4f90bc3ed72accb4485b9b2fcdf31320, type: 3}
+      propertyPath: spellId
+      value: WaterPuddle
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465701613543018959, guid: 4f90bc3ed72accb4485b9b2fcdf31320, type: 3}
+      propertyPath: m_Name
+      value: SpellPoolWaterProjectile
+      objectReference: {fileID: 0}
     - target: {fileID: 6049325456089258567, guid: 4f90bc3ed72accb4485b9b2fcdf31320, type: 3}
       propertyPath: m_Name
       value: SpellPool
@@ -914,6 +919,10 @@ PrefabInstance:
     - target: {fileID: 7556125177007478200, guid: 4f90bc3ed72accb4485b9b2fcdf31320, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844647212472845814, guid: 4f90bc3ed72accb4485b9b2fcdf31320, type: 3}
+      propertyPath: spellId
+      value: WaterProjectile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1178,6 +1187,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9134268935456384863, guid: 6fcfd21a03ccd84419b5017e1e8c2904, type: 3}
   m_PrefabInstance: {fileID: 1584699191251702623}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1345458664 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2112139191247025294, guid: ee12d398392572e4b9132221a33e8c08, type: 3}
+  m_PrefabInstance: {fileID: 713763711}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a0933b2a828ad43a65ee508c1aa482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Gameplay.Orbs.OrbPool
 --- !u!1 &1486212429
 GameObject:
   m_ObjectHideFlags: 0

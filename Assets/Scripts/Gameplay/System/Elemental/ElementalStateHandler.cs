@@ -6,11 +6,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.System.Elemental
 {
-    [RequireComponent(typeof(HealthSystem))]
     public class ElementalStateHandler : MonoBehaviour
     {
         private readonly List<ActiveElementalState> activeStates = new();
-
         private HealthSystem healthSystem;
 
         public event Action<ActiveElementalState> OnStateApplied;
@@ -42,7 +40,6 @@ namespace Assets.Scripts.Gameplay.System.Elemental
             var newState = new ActiveElementalState(data, source, vfx);
             activeStates.Add(newState);
             OnStateApplied?.Invoke(newState);
-
         }
 
         public bool RemoveState(ElementalStateType type)
@@ -52,7 +49,6 @@ namespace Assets.Scripts.Gameplay.System.Elemental
             activeStates.Remove(state);
             DespawnVfx(state);
             OnStateRemoved?.Invoke(state);
-
             return true;
         }
 
@@ -69,6 +65,7 @@ namespace Assets.Scripts.Gameplay.System.Elemental
                 state = active;
                 return true;
             }
+
             state = null;
             return false;
         }
@@ -79,7 +76,7 @@ namespace Assets.Scripts.Gameplay.System.Elemental
             {
                 var state = activeStates[i];
 
-                if (state.ShouldTickDamage())
+                if (healthSystem != null && state.ShouldTickDamage())
                     healthSystem.DoDamage(state.Data.DamagePerTick);
 
                 state.Tick(Time.deltaTime);

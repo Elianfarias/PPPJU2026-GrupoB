@@ -11,6 +11,9 @@ namespace Assets.Scripts.Gameplay.Orbs.Spells
         protected Vector3 origin;
         protected Vector3 initialVelocity;
         protected float elapsedTime;
+        protected Vector3 hitPoint;
+        protected Vector3 hitNormal;
+        protected bool hitWasAffectable;
 
         protected virtual void Awake()
         {
@@ -21,6 +24,7 @@ namespace Assets.Scripts.Gameplay.Orbs.Spells
         {
             base.OnGetFromPool();
             elapsedTime = 0f;
+            hitWasAffectable = false;
         }
 
         public override void Execute(Vector3 origin, Vector3 direction, SpellSettingsSO spellSettings)
@@ -35,9 +39,11 @@ namespace Assets.Scripts.Gameplay.Orbs.Spells
         protected virtual void Update()
         {
             if (hasHit) return;
+
             elapsedTime += Time.deltaTime;
             rb.MovePosition(CalculatePosition(elapsedTime));
             transform.rotation = CalculateRotation(elapsedTime);
+
             if (elapsedTime >= spellSettings.LifeTime)
             {
                 hasHit = true;
@@ -50,14 +56,41 @@ namespace Assets.Scripts.Gameplay.Orbs.Spells
         {
             if (hasHit) return;
 
+            ContactPoint contact = collision.GetContact(0);
+            hitPoint = contact.point;
+            hitNormal = contact.normal;
+
             GameObject hitRoot = collision.rigidbody != null
                 ? collision.rigidbody.gameObject
                 : collision.collider.gameObject;
 
+            ResolveImpact(hitRoot);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (hasHit) return;
+
+            GameObject hitRoot = other.attachedRigidbody != null
+                ? other.attachedRigidbody.gameObject
+                : other.gameObject;
+
+            if (!hitRoot.TryGetComponent<ElementalStateHandler>(out _)) return;
+
+            hitPoint = transform.position;
+            hitNormal = -direction;
+
+            ResolveImpact(hitRoot);
+        }
+
+        private void ResolveImpact(GameObject hitRoot)
+        {
+            hitWasAffectable = hitRoot.TryGetComponent<ElementalStateHandler>(out var handler);
+
             if (hitRoot.TryGetComponent<HealthSystem>(out var health))
                 health.DoDamage(spellSettings.Damage);
 
-            if (hitRoot.TryGetComponent<ElementalStateHandler>(out var handler))
+            if (hitWasAffectable)
                 ApplyStatusEffect(handler, hitRoot);
 
             hasHit = true;

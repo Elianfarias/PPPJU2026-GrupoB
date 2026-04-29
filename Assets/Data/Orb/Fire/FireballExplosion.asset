@@ -23,7 +23,7 @@ MonoBehaviour:
   <AppliedState>k__BackingField: {fileID: 11400000, guid: 40a5077463ce47943bfc07a462c68a8c, type: 2}
   <Knockback>k__BackingField:
     Apply: 1
-    Force: 5
+    Force: 100
   <CastSpellSound>k__BackingField: {fileID: 0}
   <SpellSound>k__BackingField: {fileID: 0}
   <ImpactSpellSound>k__BackingField: {fileID: 0}

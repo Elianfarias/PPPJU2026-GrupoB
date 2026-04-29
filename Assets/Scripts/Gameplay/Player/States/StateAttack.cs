@@ -5,8 +5,6 @@ namespace Assets.Scripts.Gameplay.Player.States
 {
     public class StateAttack : StateBase
     {
-        private float nextTimeCast;
-
         public override void Initialize(FsmPlayerManager manager, PlayerContext playerContext)
         {
             base.Initialize(manager, playerContext);
@@ -27,8 +25,6 @@ namespace Assets.Scripts.Gameplay.Player.States
 
         private void TryCast()
         {
-            if (nextTimeCast > Time.time) return;
-
             int slotIndex = PlayerContext.LeftAttackPressed ? 0 : 1;
 
             PlayerContext.LeftAttackPressed = false;
@@ -37,7 +33,6 @@ namespace Assets.Scripts.Gameplay.Player.States
             if (!PlayerContext.OrbInventory.TryConsumeSlot(slotIndex, out var orb)) return;
             if (!PlayerContext.Data.SpellBook.TryGetSpell(orb.Element, out var spell)) return;
 
-            nextTimeCast = Time.time + PlayerContext.Data.CdAttack;
             ExecuteSpell(spell);
         }
 
