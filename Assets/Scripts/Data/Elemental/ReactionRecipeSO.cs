@@ -16,6 +16,9 @@ namespace Assets.Scripts.Data.Elemental
         [field: SerializeField] public LayerMask AffectedLayers { get; private set; }
         [field: SerializeField] public GameObject VfxPrefab { get; private set; }
         [field: SerializeField] public AudioClip Sound { get; private set; }
+        [Header("Blind")]
+        [field: SerializeField] public bool BlindsTargets { get; private set; }
+        [field: SerializeField] public float BlindDuration { get; private set; } = 3f;
 
         public bool Matches(ElementalStateType existingState, ElementalNature incoming)
         {

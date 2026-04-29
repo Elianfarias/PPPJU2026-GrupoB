@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Elemental;
+using Assets.Scripts.Gameplay.Enemy;
 using Assets.Scripts.Gameplay.System.Enums;
 using UnityEngine;
 
@@ -34,6 +35,7 @@ namespace Assets.Scripts.Gameplay.System.Elemental
             }
             return false;
         }
+
         private void ExecuteReaction(ReactionRecipeSO recipe, GameObject source)
         {
             if (recipe.VfxPrefab != null)
@@ -42,14 +44,33 @@ namespace Assets.Scripts.Gameplay.System.Elemental
             if (recipe.Sound != null)
                 AudioSource.PlayClipAtPoint(recipe.Sound, transform.position);
 
-            if (recipe.Damage <= 0f || recipe.Radius <= 0f) return;
+            if (recipe.Radius <= 0f) return;
 
             var hits = Physics.OverlapSphere(transform.position, recipe.Radius, recipe.AffectedLayers);
             foreach (var hit in hits)
             {
-                if (hit.TryGetComponent<HealthSystem>(out var health))
-                    health.DoDamage(recipe.Damage);
+                ApplyDamage(hit, recipe);
+                ApplyBlind(hit, recipe);
             }
+        }
+
+        private static void ApplyDamage(Collider hit, ReactionRecipeSO recipe)
+        {
+            if (recipe.Damage <= 0f) return;
+            if (hit.TryGetComponent<HealthSystem>(out var health))
+                health.DoDamage(recipe.Damage);
+        }
+
+        private static void ApplyBlind(Collider hit, ReactionRecipeSO recipe)
+        {
+            if (!recipe.BlindsTargets) return;
+
+            GameObject root = hit.attachedRigidbody != null
+                ? hit.attachedRigidbody.gameObject
+                : hit.gameObject;
+
+            if (root.TryGetComponent<FsmEnemyManager>(out var enemy))
+                enemy.LoseAggro(recipe.BlindDuration);
         }
     }
 }

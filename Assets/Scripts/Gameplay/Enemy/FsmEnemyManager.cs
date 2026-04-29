@@ -20,6 +20,9 @@ namespace Assets.Scripts.Gameplay.Enemy
         private EnemyContext context;
         private readonly List<StateBase> stateBases = new();
         private StateBase currentState;
+        private float blindUntil;
+
+        public bool IsBlind => Time.time < blindUntil;
 
         private void Awake()
         {
@@ -30,15 +33,9 @@ namespace Assets.Scripts.Gameplay.Enemy
             currentState.OnEnter();
         }
 
-        private void Update()
-        {
-            currentState.OnUpdate();
-        }
+        private void Update() => currentState.OnUpdate();
 
-        private void OnAnimatorIK(int layerIndex)
-        {
-            currentState.OnAnimatorIK(layerIndex);
-        }
+        private void OnAnimatorIK(int layerIndex) => currentState.OnAnimatorIK(layerIndex);
 
         public void SwitchState(StateBase newState)
         {
@@ -52,17 +49,11 @@ namespace Assets.Scripts.Gameplay.Enemy
         public StateBase FindState(EnemyStateType stateType)
         {
             foreach (var state in stateBases)
-            {
-                if (state.StateType == stateType)
-                    return state;
-            }
+                if (state.StateType == stateType) return state;
             return null;
         }
 
-        public Coroutine StartManagedCoroutine(IEnumerator routine)
-        {
-            return StartCoroutine(routine);
-        }
+        public Coroutine StartManagedCoroutine(IEnumerator routine) => StartCoroutine(routine);
 
         public void OnAttackHit()
         {
@@ -80,6 +71,15 @@ namespace Assets.Scripts.Gameplay.Enemy
                 Vector3 direction = (transform.position - context.Player.position).normalized;
                 knockback.ApplyKnockback(direction, enemySettings.AttackKnockback);
             }
+        }
+
+        public void LoseAggro(float duration)
+        {
+            blindUntil = Time.time + duration;
+
+            var idle = FindState(EnemyStateType.Idle);
+            if (idle != null)
+                SwitchState(idle);
         }
 
         private EnemyContext BuildContext()

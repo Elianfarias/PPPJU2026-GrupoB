@@ -18,6 +18,8 @@ namespace Assets.Scripts.Gameplay.Enemy.States
         {
             if (TryTransitionToDying()) return;
 
+            if (context.Manager.IsBlind) return;
+
             if (IsPlayerInRange(context.Settings.PlayerDetectionRadius))
             {
                 var chase = context.Manager.FindState(EnemyStateType.Chase);

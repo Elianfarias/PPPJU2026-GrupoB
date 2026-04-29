@@ -15,10 +15,12 @@ MonoBehaviour:
   <ReactionName>k__BackingField: Vapor
   <RequiredState>k__BackingField: 2
   <IncomingNature>k__BackingField: 1
-  <Damage>k__BackingField: 50
-  <Radius>k__BackingField: 2
+  <Damage>k__BackingField: 0
+  <Radius>k__BackingField: 4
   <AffectedLayers>k__BackingField:
     serializedVersion: 2
     m_Bits: 2048
-  <VfxPrefab>k__BackingField: {fileID: 0}
+  <VfxPrefab>k__BackingField: {fileID: 4663679174155961175, guid: 9311617b76dd8d049b198314d66ddeb5, type: 3}
   <Sound>k__BackingField: {fileID: 0}
+  <BlindsTargets>k__BackingField: 1
+  <BlindDuration>k__BackingField: 3

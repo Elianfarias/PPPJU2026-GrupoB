@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7005086241163247510}
   - component: {fileID: 2350734497682692895}
   - component: {fileID: 6960450077465078687}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: WaterPuddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
