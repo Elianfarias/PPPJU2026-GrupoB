@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Gameplay.Player.States.SubStates;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Player.States
@@ -12,7 +11,6 @@ namespace Assets.Scripts.Gameplay.Player.States
         {
             base.Initialize(manager, playerContext);
             StateType = StateType.Airborne;
-            Cursor.lockState = CursorLockMode.Locked;
         }
 
         protected override void RegisterSubStates()
@@ -44,32 +42,52 @@ namespace Assets.Scripts.Gameplay.Player.States
         protected override void OnParentFixedUpdate()
         {
             ApplyAerialMovement();
-            ApplyRotation();
+            RotateWithCamera();
         }
 
         private void ApplyAerialMovement()
         {
-            Vector3 localDirection = new(PlayerContext.MoveInput.x, 0f, PlayerContext.MoveInput.y);
-            Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(localDirection.normalized);
-            Vector3 targetVelocity = AerialMultiplier * PlayerContext.Data.MaxHorizontalSpeed * worldDirection;
+            Vector3 worldDir = CameraRelativeDirection(PlayerContext.MoveInput);
+            Vector3 target = worldDir * (PlayerContext.Data.MaxHorizontalSpeed * AerialMultiplier);
 
-            Vector3 currentHorizontal = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
-            Vector3 newHorizontal = Vector3.MoveTowards(currentHorizontal, targetVelocity, PlayerContext.Data.Acceleration * AerialMultiplier * Time.fixedDeltaTime);
+            Vector3 current = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
+            Vector3 newHoriz = Vector3.MoveTowards(
+                current, target,
+                PlayerContext.Data.Acceleration * AerialMultiplier * Time.fixedDeltaTime
+            );
 
-            PlayerContext.Rb.linearVelocity = new Vector3(newHorizontal.x, PlayerContext.Rb.linearVelocity.y, newHorizontal.z);
+            PlayerContext.Rb.linearVelocity = new Vector3(newHoriz.x, PlayerContext.Rb.linearVelocity.y, newHoriz.z);
         }
 
-        private void ApplyRotation()
+        private void RotateWithCamera()
         {
-            float angle = PlayerContext.LookInput.x * PlayerContext.Data.RotationSpeedX * Time.fixedDeltaTime;
-            PlayerContext.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
+            Vector3 camForward = PlayerContext.CameraTransform.forward;
+            camForward.y = 0f;
+            if (camForward.sqrMagnitude < 0.01f) return;
+
+            Quaternion target = Quaternion.LookRotation(camForward.normalized);
+            Manager.transform.rotation = Quaternion.Lerp(
+                Manager.transform.rotation,
+                target,
+                Time.fixedDeltaTime * PlayerContext.Data.RotationSpeedX
+            );
+        }
+
+        private Vector3 CameraRelativeDirection(Vector2 input)
+        {
+            Transform cam = PlayerContext.CameraTransform;
+            Vector3 camForward = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
+            Vector3 camRight = Vector3.ProjectOnPlane(cam.right, Vector3.up).normalized;
+            return (camForward * input.y + camRight * input.x).normalized;
         }
 
         private bool IsGrounded()
         {
             float radius = PlayerContext.CapsuleCollider.radius;
-            Vector3 bottom = PlayerContext.CapsuleCollider.bounds.center - Vector3.up * (PlayerContext.CapsuleCollider.bounds.extents.y - radius);
-            return Physics.SphereCast(bottom, radius * 0.9f, Vector3.down, out _, PlayerContext.Data.RaycastDistance, PlayerContext.Data.LayerCollision);
+            Vector3 bottom = PlayerContext.CapsuleCollider.bounds.center
+                - Vector3.up * (PlayerContext.CapsuleCollider.bounds.extents.y - radius);
+            return Physics.SphereCast(bottom, radius * 0.9f, Vector3.down, out _,
+                PlayerContext.Data.RaycastDistance, PlayerContext.Data.LayerCollision);
         }
 
         public void EnterFall()

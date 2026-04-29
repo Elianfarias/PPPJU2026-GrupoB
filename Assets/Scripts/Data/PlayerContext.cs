@@ -24,4 +24,7 @@ public class PlayerContext
     public MMF_Player JumpFeedback;
     public bool LeftAttackPressed;
     public bool RightAttackPressed;
+    public Vector3 AimPoint;
+    public Vector3 AimDirection;
+    public Transform CameraTransform;
 }

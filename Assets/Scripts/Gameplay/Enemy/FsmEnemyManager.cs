@@ -1,4 +1,6 @@
 using Assets.Scripts.Gameplay.Enemy.States;
+using Assets.Scripts.Gameplay.System.Elemental;
+using Assets.Scripts.Gameplay.System.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,31 +8,26 @@ using UnityEngine.AI;
 
 namespace Assets.Scripts.Gameplay.Enemy
 {
+    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(HealthSystem))]
+    [RequireComponent(typeof(CapsuleCollider))]
+    [RequireComponent(typeof(ElementalStateHandler))]
     public class FsmEnemyManager : MonoBehaviour
     {
-        [SerializeField] private EnemySettingsSO enemySettingsSO;
-        [SerializeField] private NavMeshAgent _agent;
-        [SerializeField] private Animator animator;
-        [SerializeField] private HealthSystem healthSystem;
-        [SerializeField] private CapsuleCollider capsuleCollider;
-        [SerializeField] private Transform firePoint;
+        [SerializeField] private EnemySettingsSO enemySettings;
 
-        private readonly IList<StateBase> stateBases = new List<StateBase>();
+        private EnemyContext context;
+        private readonly List<StateBase> stateBases = new();
         private StateBase currentState;
 
         private void Awake()
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-
-            stateBases.Add(new StateRunning());
-            stateBases.Add(new StateHiting());
-            stateBases.Add(new StateDying());
-
-            foreach (var state in stateBases)
-                state.Initialize(this, animator, enemySettingsSO, _agent, player.transform, healthSystem, capsuleCollider, firePoint);
-
-            currentState = FindState(EnemyStateType.Running);
+            context = BuildContext();
+            RegisterStates();
+            InitializeStates();
+            currentState = FindState(EnemyStateType.Idle);
+            currentState.OnEnter();
         }
 
         private void Update()
@@ -43,12 +40,12 @@ namespace Assets.Scripts.Gameplay.Enemy
             currentState.OnAnimatorIK(layerIndex);
         }
 
-        public void SwitchState(StateBase state)
+        public void SwitchState(StateBase newState)
         {
-            if (currentState == state) return;
+            if (newState == null || currentState == newState) return;
 
             currentState.OnExit();
-            currentState = state;
+            currentState = newState;
             currentState.OnEnter();
         }
 
@@ -56,16 +53,65 @@ namespace Assets.Scripts.Gameplay.Enemy
         {
             foreach (var state in stateBases)
             {
-                if (state.stateType == stateType)
+                if (state.StateType == stateType)
                     return state;
             }
-
             return null;
         }
 
         public Coroutine StartManagedCoroutine(IEnumerator routine)
         {
             return StartCoroutine(routine);
+        }
+
+        public void OnAttackHit()
+        {
+            if (currentState.StateType != EnemyStateType.Attack) return;
+            if (context.Player == null) return;
+
+            float distance = Vector3.Distance(transform.position, context.Player.position);
+            if (distance > enemySettings.AttackRange) return;
+
+            if (context.Player.TryGetComponent<HealthSystem>(out var playerHealth))
+                playerHealth.DoDamage(enemySettings.AttackDamage);
+
+            if (context.Player.TryGetComponent<IKnockbackable>(out var knockback))
+            {
+                Vector3 direction = (transform.position - context.Player.position).normalized;
+                knockback.ApplyKnockback(direction, enemySettings.AttackKnockback);
+            }
+        }
+
+        private EnemyContext BuildContext()
+        {
+            var player = GameObject.FindGameObjectWithTag("Player");
+
+            return new EnemyContext
+            {
+                Manager = this,
+                Animator = GetComponent<Animator>(),
+                Settings = enemySettings,
+                Agent = GetComponent<NavMeshAgent>(),
+                Player = player != null ? player.transform : null,
+                HealthSystem = GetComponent<HealthSystem>(),
+                CapsuleCollider = GetComponent<CapsuleCollider>(),
+                StateHandler = GetComponent<ElementalStateHandler>(),
+                Resolver = GetComponent<ReactionResolver>()
+            };
+        }
+
+        private void RegisterStates()
+        {
+            stateBases.Add(new StateIdle());
+            stateBases.Add(new StateChase());
+            stateBases.Add(new StateAttack());
+            stateBases.Add(new StateDying());
+        }
+
+        private void InitializeStates()
+        {
+            foreach (var state in stateBases)
+                state.Initialize(context);
         }
     }
 }

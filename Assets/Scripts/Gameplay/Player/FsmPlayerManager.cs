@@ -17,12 +17,19 @@ namespace Assets.Scripts.Gameplay.Player
         [SerializeField] private HealthSystem healthSystem;
         [SerializeField] private CapsuleCollider capsuleCollider;
         [SerializeField] private Transform firePoint;
-        [SerializeField] private GameObject cameraThirdPerson;
-        [SerializeField] private GameObject cameraFirstPerson;
+        [SerializeField] private Transform cameraPivot;
+        [SerializeField] private Camera mainCamera;
+
+        // Layer que el raycast de aim puede golpear (suelo, paredes, enemigos)
+        [SerializeField] private LayerMask aimColliderMask;
+
+        // Distancia máxima para el aim — fallback si el raycast no pega nada
+        [SerializeField] private float aimMaxDistance = 100f;
 
         private PlayerContext ctx;
         private readonly List<StateBase> rootStates = new();
         private StateBase currentState;
+        private float currentPitch;
 
         private void Awake()
         {
@@ -36,13 +43,9 @@ namespace Assets.Scripts.Gameplay.Player
                 FirePoint = firePoint,
                 FsmPlayerManager = this,
                 OrbInventory = GetComponent<OrbInventory>(),
-                LeftAttackPressed = false,
-                RightAttackPressed = false,
-                DodgePressed = false,
-                JumpPressed = false,
-                SprintPressed = false,
+                CameraTransform = mainCamera.transform,
                 DodgeFeedback = dodgeFeedback,
-                JumpFeedback = jumpFeedback
+                JumpFeedback = jumpFeedback,
             };
 
             rootStates.Add(new StateGrounded());
@@ -56,21 +59,37 @@ namespace Assets.Scripts.Gameplay.Player
 
             currentState = FindState(StateType.Grounded);
             currentState.OnEnter();
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private void Update()
         {
+            UpdateAim();
+            ApplyLookRotation();
             currentState.OnUpdate();
         }
 
-        private void FixedUpdate() { currentState.OnFixedUpdate(); }
-        private void OnAnimatorIK(int layerIndex) { currentState.OnAnimatorIK(layerIndex); }
+        private void FixedUpdate() => currentState.OnFixedUpdate();
+        private void OnAnimatorIK(int layerIndex) => currentState.OnAnimatorIK(layerIndex);
 
-        private void OnDrawGizmos()
+        // Raycast desde el CENTRO de la pantalla (donde está el crosshair fijo).
+        // Si pega contra geometría usamos ese punto; si no, un punto lejano hacia
+        // donde apunta la cámara. La dirección del hechizo va desde el FirePoint
+        // hasta ese punto.
+        private void UpdateAim()
         {
-            if (data == null) return;
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(transform.position, Vector3.down * data.RaycastDistance);
+            Vector2 screenCenter = new(Screen.width * 0.5f, Screen.height * 0.5f);
+            Ray ray = mainCamera.ScreenPointToRay(screenCenter);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, aimMaxDistance, aimColliderMask))
+                ctx.AimPoint = hit.point;
+            else
+                ctx.AimPoint = ray.GetPoint(aimMaxDistance);
+
+            Vector3 rawDir = ctx.AimPoint - firePoint.position;
+            ctx.AimDirection = rawDir.sqrMagnitude > 0.01f ? rawDir.normalized : mainCamera.transform.forward;
         }
 
         private void OnMove(InputValue value) { ctx.MoveInput = value.Get<Vector2>(); }
@@ -80,14 +99,6 @@ namespace Assets.Scripts.Gameplay.Player
         private void OnJump(InputValue value) { if (value.isPressed) ctx.JumpPressed = true; }
         private void OnDodge(InputValue value) { if (value.isPressed) ctx.DodgePressed = true; }
         private void OnSprint(InputValue value) { ctx.SprintPressed = value.isPressed; }
-
-        private void OnSwitchCamera(InputValue value)
-        {
-            if (!value.isPressed) return;
-            bool isThird = cameraThirdPerson.activeSelf;
-            cameraThirdPerson.SetActive(!isThird);
-            cameraFirstPerson.SetActive(isThird);
-        }
 
         public void SwitchState(StateType stateType)
         {
@@ -146,6 +157,28 @@ namespace Assets.Scripts.Gameplay.Player
             currentState.OnExit();
             currentState = airborne;
             airborne.EnterFall();
+        }
+
+        private void ApplyLookRotation()
+        {
+            float yaw = ctx.LookInput.x * data.RotationSpeedX * Time.deltaTime;
+            float pitch = ctx.LookInput.y * data.RotationSpeedY * Time.deltaTime;
+
+            transform.Rotate(Vector3.up, yaw, Space.World);
+            currentPitch = Mathf.Clamp(currentPitch - pitch, -60f, 60f);
+            cameraPivot.localEulerAngles = new Vector3(currentPitch, 0f, 0f);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (data == null) return;
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(transform.position, Vector3.down * data.RaycastDistance);
+
+            if (!Application.isPlaying) return;
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(ctx.AimPoint, 0.2f);
+            Gizmos.DrawLine(firePoint.position, ctx.AimPoint);
         }
     }
 }

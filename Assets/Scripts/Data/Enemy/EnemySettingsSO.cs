@@ -1,25 +1,44 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemySettings", menuName = "ScriptableObjects/Enemy")]
-public class EnemySettingsSO : ScriptableObject
+namespace Assets.Scripts.Gameplay.Enemy
 {
-    [SerializeField] private int damage;
-    [SerializeField] private float obstacleDetectionRadius = 2f;
-    [SerializeField] private float ropeDetectionRadius = 10f;
-    [SerializeField] private float playerDetectionRadius = 50f;
-    [SerializeField] private float wanderRadius = 15f;
-    [SerializeField] private float wanderCooldown = 2f;
-    [SerializeField] private LayerMask playerLayer;
-    [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private float attackCooldown = 1.5f;
+    [CreateAssetMenu(fileName = "EnemySettings", menuName = "OrbMage/Enemy Settings")]
+    public class EnemySettingsSO : ScriptableObject
+    {
+        [Header("Combat")]
+        [SerializeField] private float attackRange = 2f;
+        [SerializeField] private float attackCooldown = 1.5f;
+        [SerializeField] private float attackDamage = 10f;
+        [SerializeField] private float attackKnockback = 500f;
 
-    public int Damage { get { return damage; } }
-    public float ObstacleDetectionRadius { get { return obstacleDetectionRadius; } }
-    public float RopeDetectionRadius { get { return ropeDetectionRadius; } }
-    public float PlayerDetectionRadius { get { return playerDetectionRadius; } }
-    public float WanderRadius { get { return wanderRadius; } }
-    public float WanderCooldown { get { return wanderCooldown; } }
-    public LayerMask PlayerLayer { get { return playerLayer; } }
-    public LayerMask EnemyLayer { get { return enemyLayer; } }
-    public float AttackCooldown { get { return attackCooldown; } }
+        [Header("Detection")]
+        [SerializeField] private float playerDetectionRadius = 15f;
+        [SerializeField] private float playerLoseRadius = 20f;
+        [SerializeField] private LayerMask playerLayer;
+
+        [Header("Wandering")]
+        [SerializeField] private float wanderRadius = 10f;
+        [SerializeField] private float wanderCooldown = 3f;
+        [SerializeField] private float obstacleDetectionRadius = 1.5f;
+        [SerializeField] private LayerMask enemyLayer;
+
+        [Header("Animation")]
+        [SerializeField] private string attackAnimationName = "Attack";
+
+        public float AttackDamage => attackDamage;
+        public float AttackKnockback => attackKnockback;
+        public float AttackRange => attackRange;
+        public float AttackCooldown => attackCooldown;
+
+        public float PlayerDetectionRadius => playerDetectionRadius;
+        public float PlayerLoseRadius => playerLoseRadius;
+        public LayerMask PlayerLayer => playerLayer;
+
+        public float WanderRadius => wanderRadius;
+        public float WanderCooldown => wanderCooldown;
+        public float ObstacleDetectionRadius => obstacleDetectionRadius;
+        public LayerMask EnemyLayer => enemyLayer;
+
+        public string AttackAnimationName => attackAnimationName;
+    }
 }

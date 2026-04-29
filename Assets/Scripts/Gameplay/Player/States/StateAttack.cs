@@ -17,20 +17,12 @@ namespace Assets.Scripts.Gameplay.Player.States
         {
             base.OnEnter();
             PlayerContext.JumpPressed = false;
-            PlayerContext.LeftAttackPressed = false;
-            PlayerContext.RightAttackPressed = false;
+
             TryCast();
         }
-
-        public override void OnUpdate()
-        {
-            Manager.ReturnFromAttack();
-        }
-
+        public override void OnUpdate() { Manager.ReturnFromAttack(); }
         public override void OnFixedUpdate() { }
-
         public override void OnExit() { }
-
         public override void OnAnimatorIK(int layerIndex) { }
 
         private void TryCast()
@@ -38,6 +30,10 @@ namespace Assets.Scripts.Gameplay.Player.States
             if (nextTimeCast > Time.time) return;
 
             int slotIndex = PlayerContext.LeftAttackPressed ? 0 : 1;
+
+            PlayerContext.LeftAttackPressed = false;
+            PlayerContext.RightAttackPressed = false;
+
             if (!PlayerContext.OrbInventory.TryConsumeSlot(slotIndex, out var orb)) return;
             if (!PlayerContext.Data.SpellBook.TryGetSpell(orb.Element, out var spell)) return;
 
@@ -48,7 +44,8 @@ namespace Assets.Scripts.Gameplay.Player.States
         private void ExecuteSpell(SpellSettingsSO spell)
         {
             var instance = spell.GetPool().GetSpell();
-            instance.Execute(PlayerContext.FirePoint.position, PlayerContext.FirePoint.forward, spell);
+
+            instance.Execute(PlayerContext.FirePoint.position, PlayerContext.AimDirection, spell);
         }
     }
 }

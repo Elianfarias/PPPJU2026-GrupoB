@@ -51,7 +51,6 @@ namespace Assets.Scripts.Gameplay.Player.States
                 return;
             }
 
-
             if (PlayerContext.MoveInput == Vector2.zero)
                 SwitchSubState(StateType.Idle);
             else if (PlayerContext.SprintPressed)
@@ -62,20 +61,21 @@ namespace Assets.Scripts.Gameplay.Player.States
 
         protected override void OnParentFixedUpdate()
         {
-            ApplyRotation();
+            RotateWithCamera();
         }
 
-        private void ApplyRotation()
+        // El player siempre mira hacia donde apunta la cámara (proyectado en XZ).
+        // Estilo Spellbreak/Fortnite: el cuerpo sigue al lente.
+        private void RotateWithCamera()
         {
-            if (PlayerContext.MoveInput == Vector2.zero) return;
+            Vector3 camForward = PlayerContext.CameraTransform.forward;
+            camForward.y = 0f;
+            if (camForward.sqrMagnitude < 0.01f) return;
 
-            Vector3 moveDirection = new(PlayerContext.MoveInput.x, 0f, PlayerContext.MoveInput.y);
-            Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(moveDirection);
-
-            Quaternion targetRotation = Quaternion.LookRotation(worldDirection);
-            PlayerContext.FsmPlayerManager.transform.rotation = Quaternion.Lerp(
-                PlayerContext.FsmPlayerManager.transform.rotation,
-                targetRotation,
+            Quaternion target = Quaternion.LookRotation(camForward.normalized);
+            Manager.transform.rotation = Quaternion.Lerp(
+                Manager.transform.rotation,
+                target,
                 Time.fixedDeltaTime * PlayerContext.Data.RotationSpeedX
             );
         }
@@ -83,8 +83,10 @@ namespace Assets.Scripts.Gameplay.Player.States
         private bool IsGrounded()
         {
             float radius = PlayerContext.CapsuleCollider.radius;
-            Vector3 bottom = PlayerContext.CapsuleCollider.bounds.center - Vector3.up * (PlayerContext.CapsuleCollider.bounds.extents.y - radius);
-            return Physics.SphereCast(bottom, radius * 0.9f, Vector3.down, out _, PlayerContext.Data.RaycastDistance, PlayerContext.Data.LayerCollision);
+            Vector3 bottom = PlayerContext.CapsuleCollider.bounds.center
+                - Vector3.up * (PlayerContext.CapsuleCollider.bounds.extents.y - radius);
+            return Physics.SphereCast(bottom, radius * 0.9f, Vector3.down, out _,
+                PlayerContext.Data.RaycastDistance, PlayerContext.Data.LayerCollision);
         }
     }
 }

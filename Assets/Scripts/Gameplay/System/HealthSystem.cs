@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class HealthSystem : MonoBehaviour
 
     [SerializeField] private float maxLife = 100f;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private MMF_Player hurtFeedback;
 
     private float life = 100f;
     private bool isTakingDamage;
@@ -54,6 +56,9 @@ public class HealthSystem : MonoBehaviour
     private IEnumerator TakeDamage()
     {
         isTakingDamage = true;
+        
+        if (hurtFeedback != null)
+            hurtFeedback.PlayFeedbacks();
 
         yield return new WaitForSeconds(0.3f);
 
@@ -64,7 +69,6 @@ public class HealthSystem : MonoBehaviour
     {
         life = 0;
         OnDie?.Invoke();
-        Destroy(gameObject);
         yield return new WaitForSeconds(0.5f);
     }
 

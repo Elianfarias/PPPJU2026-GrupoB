@@ -23,7 +23,6 @@ namespace Assets.Scripts.Gameplay.Player.States
 
         public override void OnFixedUpdate()
         {
-            ApplyRotation();
         }
 
         public override void OnExit()
@@ -45,12 +44,6 @@ namespace Assets.Scripts.Gameplay.Player.States
 
             PlayerContext.Rb.linearVelocity = new Vector3(0f, PlayerContext.Rb.linearVelocity.y, 0f);
             PlayerContext.Rb.AddForce(worldDirection * PlayerContext.Data.DodgeForce, ForceMode.Impulse);
-        }
-
-        private void ApplyRotation()
-        {
-            float angle = PlayerContext.LookInput.x * PlayerContext.Data.RotationSpeedX * Time.fixedDeltaTime;
-            PlayerContext.FsmPlayerManager.transform.Rotate(Vector3.up, angle, Space.World);
         }
     }
 }

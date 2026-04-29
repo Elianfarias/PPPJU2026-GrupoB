@@ -1,53 +1,51 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Assets.Scripts.Gameplay.Enemy.States
 {
     public abstract class StateBase
     {
-        protected static readonly int State = Animator.StringToHash("State");
-        public EnemyStateType stateType;
+        protected static readonly int StateHash = Animator.StringToHash("State");
 
-        protected FsmEnemyManager fsmManager;
-        protected Animator animator;
-        protected EnemySettingsSO enemySettingsSO;
-        protected NavMeshAgent agent;
-        protected HealthSystem healthSystem;
-        protected Transform player;
-        protected CapsuleCollider capsuleCollider;
-        protected Transform firePoint;
+        public EnemyStateType StateType { get; protected set; }
 
-        public virtual void Initialize(FsmEnemyManager fsmManager,
-            Animator animator,
-            EnemySettingsSO enemySettingsSO,
-            NavMeshAgent agent,
-            Transform player,
-            HealthSystem healthSystem,
-            CapsuleCollider capsuleCollider,
-            Transform firePoint
-            )
+        protected EnemyContext context;
+
+        public virtual void Initialize(EnemyContext context)
         {
-            this.fsmManager = fsmManager;
-            this.animator = animator;
-            this.enemySettingsSO = enemySettingsSO;
-            this.agent = agent;
-            this.player = player;
-            this.healthSystem = healthSystem;
-            this.capsuleCollider = capsuleCollider;
-            this.firePoint = firePoint;
+            this.context = context;
         }
 
         public virtual void OnEnter()
         {
-            animator.SetInteger(State, (int)stateType);
+            context.Animator.SetInteger(StateHash, (int)StateType);
         }
+
         public abstract void OnUpdate();
         public abstract void OnExit();
-        public abstract void OnAnimatorIK(int layerIndex);
 
-        protected bool IsPlayerNearby()
+        public virtual void OnAnimatorIK(int layerIndex) { }
+
+        protected bool IsPlayerInRange(float radius)
         {
-            return Physics.CheckSphere(fsmManager.transform.position, enemySettingsSO.PlayerDetectionRadius, enemySettingsSO.PlayerLayer);
+            return Physics.CheckSphere(
+                context.Manager.transform.position,
+                radius,
+                context.Settings.PlayerLayer
+            );
+        }
+
+        protected float DistanceToPlayer()
+        {
+            return Vector3.Distance(context.Manager.transform.position, context.Player.position);
+        }
+
+        protected bool TryTransitionToDying()
+        {
+            if (context.HealthSystem.GetCurrentLife() > 0) return false;
+
+            var dying = context.Manager.FindState(EnemyStateType.Dying);
+            context.Manager.SwitchState(dying);
+            return true;
         }
     }
 }

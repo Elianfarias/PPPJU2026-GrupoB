@@ -15,22 +15,32 @@ namespace Assets.Scripts.Gameplay.Player.States.SubStates
 
         public override void OnFixedUpdate()
         {
-            ApplyMovement();
+            ApplyMovement(PlayerContext.Data.MaxHorizontalSpeed,
+                          PlayerContext.Data.Acceleration);
         }
 
         public override void OnExit() { }
         public override void OnAnimatorIK(int layerIndex) { }
 
-        private void ApplyMovement()
+        private void ApplyMovement(float speed, float accel)
         {
-            Vector3 localDirection = new(PlayerContext.MoveInput.x, 0f, PlayerContext.MoveInput.y);
-            Vector3 worldDirection = PlayerContext.FsmPlayerManager.transform.TransformDirection(localDirection.normalized);
-            Vector3 targetVelocity = worldDirection * PlayerContext.Data.MaxHorizontalSpeed;
+            Vector3 worldDir = CameraRelativeDirection(PlayerContext.MoveInput);
+            Vector3 target = worldDir * speed;
 
-            Vector3 currentHorizontal = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
-            Vector3 newHorizontal = Vector3.MoveTowards(currentHorizontal, targetVelocity, PlayerContext.Data.Acceleration * Time.fixedDeltaTime);
+            Vector3 current = new(PlayerContext.Rb.linearVelocity.x, 0f, PlayerContext.Rb.linearVelocity.z);
+            Vector3 newHoriz = Vector3.MoveTowards(current, target, accel * Time.fixedDeltaTime);
 
-            PlayerContext.Rb.linearVelocity = new Vector3(newHorizontal.x, PlayerContext.Rb.linearVelocity.y, newHorizontal.z);
+            PlayerContext.Rb.linearVelocity = new Vector3(newHoriz.x, PlayerContext.Rb.linearVelocity.y, newHoriz.z);
+        }
+
+        private Vector3 CameraRelativeDirection(Vector2 input)
+        {
+            Transform cam = PlayerContext.CameraTransform;
+
+            Vector3 camForward = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
+            Vector3 camRight = Vector3.ProjectOnPlane(cam.right, Vector3.up).normalized;
+
+            return (camForward * input.y + camRight * input.x).normalized;
         }
     }
 }
