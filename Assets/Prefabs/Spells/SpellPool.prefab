@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
-  defaultCapacity: 5
-  maxSize: 5
+  defaultCapacity: 2
+  maxSize: 2
   spellId: Hurricane
   spellPrefab: {fileID: 1041300845513864772, guid: 97adbc81fab65674588e2da6667a07e6, type: 3}
 --- !u!1 &1911608858942477039
@@ -92,10 +92,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
+  defaultCapacity: 2
+  maxSize: 2
+  spellId: WaterPuddle
+  spellPrefab: {fileID: 3691486366353800710, guid: 413554a94a53d6c43a7292b663ec180e, type: 3}
+--- !u!1 &2951522565351558750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1962060714852553882}
+  - component: {fileID: 2822154235478069846}
+  m_Layer: 0
+  m_Name: SpellPoolRockProjectile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1962060714852553882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951522565351558750}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7556125177007478200}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2822154235478069846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951522565351558750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
   defaultCapacity: 5
   maxSize: 5
-  spellId: WaterRay
-  spellPrefab: {fileID: 3691486366353800710, guid: 413554a94a53d6c43a7292b663ec180e, type: 3}
+  spellId: RockProjectile
+  spellPrefab: {fileID: 1633340232208362356, guid: f1259388afc483544ae7c83b7d61d9f9, type: 3}
 --- !u!1 &3674197785280959697
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,8 +188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
-  defaultCapacity: 5
-  maxSize: 5
+  defaultCapacity: 2
+  maxSize: 2
   spellId: Fireball
   spellPrefab: {fileID: 4092872357349286730, guid: 601024950d5facd4d9045785884683dc, type: 3}
 --- !u!1 &5465701613543018959
@@ -155,7 +203,7 @@ GameObject:
   - component: {fileID: 7152036288041479696}
   - component: {fileID: 8844647212472845814}
   m_Layer: 0
-  m_Name: SpellPoolWaterRay
+  m_Name: SpellPoolWaterProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,9 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
-  defaultCapacity: 5
-  maxSize: 5
-  spellId: WaterRay
+  defaultCapacity: 2
+  maxSize: 2
+  spellId: WaterProjectile
   spellPrefab: {fileID: 3291158807889880023, guid: 66c3cc82f06eb6f41b2db526607e3fa2, type: 3}
 --- !u!1 &6049325456089258567
 GameObject:
@@ -226,6 +274,7 @@ Transform:
   - {fileID: 7152036288041479696}
   - {fileID: 3949368123191733379}
   - {fileID: 263132102565018793}
+  - {fileID: 1962060714852553882}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7922677528837530337
@@ -272,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
-  defaultCapacity: 5
-  maxSize: 5
+  defaultCapacity: 2
+  maxSize: 2
   spellId: FireballExplosion
   spellPrefab: {fileID: 1764654978243476, guid: 27409424189b07a4cb4117810fb139e8, type: 3}

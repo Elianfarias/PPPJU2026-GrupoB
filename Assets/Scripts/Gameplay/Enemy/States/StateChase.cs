@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Assets.Scripts.Gameplay.Enemy.States
 {
@@ -37,8 +36,8 @@ namespace Assets.Scripts.Gameplay.Enemy.States
 
             if (distance <= context.Settings.AttackRange)
             {
-                var attack = context.Manager.FindState(EnemyStateType.Attack);
-                context.Manager.SwitchState(attack);
+                var combat = context.Manager.FindState(context.Manager.CombatStateType);
+                context.Manager.SwitchState(combat);
                 return;
             }
 

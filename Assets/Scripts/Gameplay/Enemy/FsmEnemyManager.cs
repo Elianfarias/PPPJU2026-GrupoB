@@ -13,29 +13,33 @@ namespace Assets.Scripts.Gameplay.Enemy
     [RequireComponent(typeof(HealthSystem))]
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(ElementalStateHandler))]
-    public class FsmEnemyManager : MonoBehaviour
+    public abstract class FsmEnemyManager : MonoBehaviour
     {
-        [SerializeField] private EnemySettingsSO enemySettings;
+        [SerializeField] protected EnemySettingsSO enemySettings;
+        [SerializeField] protected Transform firePoint;
 
-        private EnemyContext context;
-        private readonly List<StateBase> stateBases = new();
-        private StateBase currentState;
-        private float blindUntil;
+        protected EnemyContext context;
+        protected readonly List<StateBase> stateBases = new();
+        protected StateBase currentState;
+        protected float blindUntil;
 
         public bool IsBlind => Time.time < blindUntil;
+        public Transform FirePoint => firePoint;
 
-        private void Awake()
+        public abstract EnemyStateType CombatStateType { get; }
+
+        protected virtual void Awake()
         {
             context = BuildContext();
-            RegisterStates();
+            RegisterStates(stateBases);
             InitializeStates();
             currentState = FindState(EnemyStateType.Idle);
             currentState.OnEnter();
         }
 
-        private void Update() => currentState.OnUpdate();
+        protected virtual void Update() => currentState.OnUpdate();
 
-        private void OnAnimatorIK(int layerIndex) => currentState.OnAnimatorIK(layerIndex);
+        protected virtual void OnAnimatorIK(int layerIndex) => currentState.OnAnimatorIK(layerIndex);
 
         public void SwitchState(StateBase newState)
         {
@@ -55,24 +59,6 @@ namespace Assets.Scripts.Gameplay.Enemy
 
         public Coroutine StartManagedCoroutine(IEnumerator routine) => StartCoroutine(routine);
 
-        public void OnAttackHit()
-        {
-            if (currentState.StateType != EnemyStateType.Attack) return;
-            if (context.Player == null) return;
-
-            float distance = Vector3.Distance(transform.position, context.Player.position);
-            if (distance > enemySettings.AttackRange) return;
-
-            if (context.Player.TryGetComponent<HealthSystem>(out var playerHealth))
-                playerHealth.DoDamage(enemySettings.AttackDamage);
-
-            if (context.Player.TryGetComponent<IKnockbackable>(out var knockback))
-            {
-                Vector3 direction = (transform.position - context.Player.position).normalized;
-                knockback.ApplyKnockback(direction, enemySettings.AttackKnockback);
-            }
-        }
-
         public void LoseAggro(float duration)
         {
             blindUntil = Time.time + duration;
@@ -82,7 +68,9 @@ namespace Assets.Scripts.Gameplay.Enemy
                 SwitchState(idle);
         }
 
-        private EnemyContext BuildContext()
+        protected abstract void RegisterStates(List<StateBase> states);
+
+        protected virtual EnemyContext BuildContext()
         {
             var player = GameObject.FindGameObjectWithTag("Player");
 
@@ -98,14 +86,6 @@ namespace Assets.Scripts.Gameplay.Enemy
                 StateHandler = GetComponent<ElementalStateHandler>(),
                 Resolver = GetComponent<ReactionResolver>()
             };
-        }
-
-        private void RegisterStates()
-        {
-            stateBases.Add(new StateIdle());
-            stateBases.Add(new StateChase());
-            stateBases.Add(new StateAttack());
-            stateBases.Add(new StateDying());
         }
 
         private void InitializeStates()

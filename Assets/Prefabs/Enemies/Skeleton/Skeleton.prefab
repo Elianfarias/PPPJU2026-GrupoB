@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 8637766935728225144}
   - component: {fileID: 1065176489332128075}
   - component: {fileID: 1617764391169963945}
-  - component: {fileID: 3877720726913117924}
   - component: {fileID: 5480019476794564089}
   - component: {fileID: 3610392469040290875}
   - component: {fileID: 4883687644726048157}
   - component: {fileID: 6820594244641100863}
   - component: {fileID: 7286543528442179928}
+  - component: {fileID: 562776026937667146}
   m_Layer: 11
   m_Name: Skeleton
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4533999758156008447}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 392, y: 21.29, z: 332.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -136,19 +136,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3877720726913117924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4533999758156008447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 939ab35849217c348843bc795e6597ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Gameplay.Enemy.FsmEnemyManager
-  enemySettings: {fileID: 11400000, guid: 732aa9c104e724f4393c55d98ff4220a, type: 2}
 --- !u!114 &5480019476794564089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +205,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Gameplay.Enemy.EnemyKnockbackReceiver
   recoveryTime: 0.4
+--- !u!114 &562776026937667146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4533999758156008447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 231b45e8bb0aff74695790a44d52b2a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Gameplay.Enemy.Skeleton.SkeletonManager
+  enemySettings: {fileID: 11400000, guid: 732aa9c104e724f4393c55d98ff4220a, type: 2}
+  firePoint: {fileID: 9134268935456384863}
 --- !u!1001 &2594500961275922221
 PrefabInstance:
   m_ObjectHideFlags: 0
