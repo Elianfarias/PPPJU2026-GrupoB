@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 117153519}
   - component: {fileID: 117153518}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,7 +247,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
       propertyPath: elementWeights.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
       propertyPath: elementWeights.Array.data[0].<Pool>k__BackingField
@@ -260,7 +260,7 @@ PrefabInstance:
     - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
       propertyPath: elementWeights.Array.data[2].<Pool>k__BackingField
       value: 
-      objectReference: {fileID: 2006941422}
+      objectReference: {fileID: 713763712}
     - target: {fileID: 470961726979186733, guid: 6166e065048ce4440b0a1717e155d8a3, type: 3}
       propertyPath: elementWeights.Array.data[0].<Weight>k__BackingField
       value: 2
@@ -365,11 +365,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 274780535035363162, guid: 452c8e0394323ec4da1242ef3d9a5120, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.763548
+      value: 5.285549
       objectReference: {fileID: 0}
     - target: {fileID: 274780535035363162, guid: 452c8e0394323ec4da1242ef3d9a5120, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.820831
+      value: -23.131836
       objectReference: {fileID: 0}
     - target: {fileID: 274780535035363162, guid: 452c8e0394323ec4da1242ef3d9a5120, type: 3}
       propertyPath: m_LocalRotation.w
@@ -393,11 +393,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 609613217876740288, guid: 452c8e0394323ec4da1242ef3d9a5120, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.763548
+      value: 5.285549
       objectReference: {fileID: 0}
     - target: {fileID: 609613217876740288, guid: 452c8e0394323ec4da1242ef3d9a5120, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.820831
+      value: -23.131836
       objectReference: {fileID: 0}
     - target: {fileID: 609613217876740288, guid: 452c8e0394323ec4da1242ef3d9a5120, type: 3}
       propertyPath: m_LocalRotation.w
@@ -596,6 +596,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee12d398392572e4b9132221a33e8c08, type: 3}
+--- !u!114 &713763712 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 716383733158963931, guid: ee12d398392572e4b9132221a33e8c08, type: 3}
+  m_PrefabInstance: {fileID: 713763711}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a0933b2a828ad43a65ee508c1aa482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Gameplay.Orbs.OrbPool
 --- !u!1 &893371426
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,9 +926,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7556125177007478200, guid: 4f90bc3ed72accb4485b9b2fcdf31320, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 1586754247}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f90bc3ed72accb4485b9b2fcdf31320, type: 3}
+--- !u!4 &1199251856 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7556125177007478200, guid: 4f90bc3ed72accb4485b9b2fcdf31320, type: 3}
+  m_PrefabInstance: {fileID: 1199251855}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1209425948
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,11 +1303,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4687922046744219815, guid: f9b80a5079132a44e8d775c79c689609, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 23.48
+      value: 24.002
       objectReference: {fileID: 0}
     - target: {fileID: 4687922046744219815, guid: f9b80a5079132a44e8d775c79c689609, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 311.12
+      value: 305.809
       objectReference: {fileID: 0}
     - target: {fileID: 4687922046744219815, guid: f9b80a5079132a44e8d775c79c689609, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1332,6 +1351,54 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 8243326615244127072, guid: 452c8e0394323ec4da1242ef3d9a5120, type: 3}
   m_PrefabInstance: {fileID: 656769074}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1586754246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1586754247}
+  - component: {fileID: 1586754248}
+  m_Layer: 0
+  m_Name: SpellPoolLightningStrike
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1586754247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586754246}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1199251856}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1586754248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586754246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83809234ab0ad11419116b68fe7e6738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpellPool
+  defaultCapacity: 2
+  maxSize: 2
+  spellId: LightningStrike
+  spellPrefab: {fileID: 1539161474836872685, guid: 8da22fd8d7bb3754d91c161ee39d5598, type: 3}
 --- !u!1 &1671980460 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6016273638195212818, guid: 452c8e0394323ec4da1242ef3d9a5120, type: 3}
@@ -1404,17 +1471,6 @@ MonoBehaviour:
     CameraRadius: 0.2
     DampingIntoCollision: 0
     DampingFromCollision: 0.5
---- !u!114 &2006941422 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8659545495025307273, guid: ee12d398392572e4b9132221a33e8c08, type: 3}
-  m_PrefabInstance: {fileID: 713763711}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6a0933b2a828ad43a65ee508c1aa482, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Gameplay.Orbs.OrbPool
 --- !u!1001 &1584699191251702623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1426,6 +1482,10 @@ PrefabInstance:
     - target: {fileID: 4533999758156008447, guid: 6fcfd21a03ccd84419b5017e1e8c2904, type: 3}
       propertyPath: m_Name
       value: Skeleton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4883687644726048157, guid: 6fcfd21a03ccd84419b5017e1e8c2904, type: 3}
+      propertyPath: recipes.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9134268935456384863, guid: 6fcfd21a03ccd84419b5017e1e8c2904, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1494,7 +1554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2111127364252959703, guid: aeae4e859a529014da61a26c3ec85e45, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 329.487
+      value: 323.24
       objectReference: {fileID: 0}
     - target: {fileID: 2111127364252959703, guid: aeae4e859a529014da61a26c3ec85e45, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1548,6 +1608,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 8328907964161004246, guid: aeae4e859a529014da61a26c3ec85e45, type: 3}
+      propertyPath: recipes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1564,11 +1628,11 @@ SceneRoots:
   m_Roots:
   - {fileID: 656769074}
   - {fileID: 893371428}
+  - {fileID: 117153521}
   - {fileID: 1157939589}
   - {fileID: 1545971220}
   - {fileID: 411581268}
   - {fileID: 713763711}
   - {fileID: 1199251855}
   - {fileID: 606902814}
-  - {fileID: 117153521}
   - {fileID: 1486212432}

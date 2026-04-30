@@ -34512,7 +34512,13 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 2048
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  groundCheckDistance: 1
   impactFeedbacks: {fileID: 9212107018137060045}
+  firePatchSettings: {fileID: 11400000, guid: 5c9f85eadf03ac34494ad2ed553b33c2, type: 2}
+  patchSurfaceOffset: 0.05
 --- !u!114 &9212107018137060045
 MonoBehaviour:
   m_ObjectHideFlags: 0

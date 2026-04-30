@@ -19,11 +19,7 @@ namespace Assets.Scripts.Gameplay.Player
         [SerializeField] private Transform firePoint;
         [SerializeField] private Transform cameraPivot;
         [SerializeField] private Camera mainCamera;
-
-        // Layer que el raycast de aim puede golpear (suelo, paredes, enemigos)
         [SerializeField] private LayerMask aimColliderMask;
-
-        // Distancia máxima para el aim — fallback si el raycast no pega nada
         [SerializeField] private float aimMaxDistance = 100f;
 
         private PlayerContext ctx;

@@ -18,6 +18,7 @@ namespace Assets.Scripts.Gameplay.Player.States
 
             TryCast();
         }
+
         public override void OnUpdate() { Manager.ReturnFromAttack(); }
         public override void OnFixedUpdate() { }
         public override void OnExit() { }
@@ -40,7 +41,15 @@ namespace Assets.Scripts.Gameplay.Player.States
         {
             var instance = spell.GetPool().GetSpell();
 
-            instance.Execute(PlayerContext.FirePoint.position, PlayerContext.AimDirection, spell);
+            Vector3 origin = spell.UseAimPoint
+                ? PlayerContext.AimPoint
+                : PlayerContext.FirePoint.position;
+
+            Vector3 direction = spell.UseAimPoint
+                ? Vector3.down
+                : PlayerContext.AimDirection;
+
+            instance.Execute(origin, direction, spell);
         }
     }
 }

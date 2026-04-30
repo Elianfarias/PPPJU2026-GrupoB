@@ -27,6 +27,8 @@ namespace Assets.Scripts.Data.Orb
         [field: SerializeField] public AudioClip CastSpellSound { get; private set; }
         [field: SerializeField] public AudioClip SpellSound { get; private set; }
         [field: SerializeField] public AudioClip ImpactSpellSound { get; private set; }
+        [Header("Targeting")]
+        [field: SerializeField] public bool UseAimPoint { get; private set; }
 
         public PlayerSpellPool GetPool() => PlayerSpellPool.Get(SpellId);
     }
